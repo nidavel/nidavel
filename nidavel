@@ -1,0 +1,38 @@
+<?php
+
+if ($argc < 1) {
+    return 0;
+}
+
+if ($argc === 1) {
+    echo file_get_contents('README.md');
+    return;
+}
+
+$cmd = 'php app/Blasta/Commands/'.$argv[1];
+
+if ($argc > 2) {
+    for ($x = 2; $x < $argc; $x++) {
+        $cmd .= ' ' . escapeshellarg($argv[$x]);
+    }
+}
+
+$cmd = escapeshellcmd($cmd);
+
+$descriptorspec = array(
+   0 => STDIN,
+   1 => STDOUT,
+   2 => STDERR
+);
+
+$process = proc_open($cmd, $descriptorspec, $pipes);
+
+if (is_resource($process)) {
+    fclose(STDIN);
+    fclose(STDOUT);
+    fclose(STDERR);
+
+    $return_value = proc_close($process);
+
+    echo "command returned $return_value\n";
+}

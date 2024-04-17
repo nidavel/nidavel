@@ -1,0 +1,33 @@
+<?php
+
+$srv1 = 'php -S localhost:8000 -t public';
+$srv2 = 'php -S localhost:8001 -t public';
+
+$descriptorspec = array(
+   0 => STDIN,
+   1 => STDOUT,
+   2 => STDERR
+);
+
+$process1 = proc_open($srv1, $descriptorspec, $pipes);
+$process2 = proc_open($srv2, $descriptorspec, $pipes);
+
+if (is_resource($process1)) {
+    fclose(STDIN);
+    fclose(STDOUT);
+    fclose(STDERR);
+
+    $return_value = proc_close($process1);
+
+    echo "command returned $return_value\n";
+}
+
+if (is_resource($process2)) {
+    fclose(STDIN);
+    fclose(STDOUT);
+    fclose(STDERR);
+
+    $return_value = proc_close($process2);
+
+    echo "command returned $return_value\n";
+}

@@ -1,0 +1,161 @@
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    scroll-behavior: smooth;
+}
+
+:root {
+    font-family: 'Josefin Sans', sans-serif;
+    --primary-color: #f87060;
+    --secondary-color: #102542;
+}
+
+.body-margin {
+    @apply xl:mx-64 lg:mx-32 md:mx-16 sm:mx-8 mx-4;
+}
+
+.body-bg {
+    background-color: #f8f9fa;
+}
+
+.bg-primary {
+    @apply bg-primary-color;
+}
+
+body {
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #4d4d4d;
+    @apply body-bg;
+}
+
+.link {
+    @apply text-secondary-color font-bold hover:text-black transition duration-500;
+}
+
+.nav {
+    @apply fixed z-30 w-full border-b border-primary-color body-bg;
+}
+
+.menu-item {
+    @apply text-secondary-color font-bold hover:text-black transition duration-500;
+}
+
+.menu-item-mobile {
+    @apply text-primary-color font-bold;
+}
+
+.menu-bar {
+    @apply hidden md:flex gap-4 justify-end;
+}
+
+.menu-mobile-btn {
+    @apply block md:hidden;
+}
+
+.nav-collapse {
+    @apply md:hidden right-0 w-3/4 h-screen z-40 bg-secondary-color p-3 font-light;
+}
+
+.nav-collapsed {
+    opacity: 0;
+    transform: translateX(150%);
+    @apply transition duration-500 ease-in-out;
+}
+
+.nav-show {
+    opacity: 1;
+    transform: translateX(0%);
+    @apply transition duration-500 ease-in-out;
+}
+
+.nav-collapsed-header {
+    @apply flex justify-between items-center h-16 border-b border-gray-700/50;
+}
+
+.header-img {
+    @apply w-full h-64 overflow-hidden;
+}
+
+.post-content {
+    @apply w-full md:w-[70%];
+}
+
+.posts-list {
+    @apply w-full md:w-[70%] flex gap-16 md:gap-20 flex-wrap;
+}
+
+.post-container {
+    @apply border-black rounded-lg w-full h-32 md:h-72 md:w-48 transition duration-500 flex gap-2 flex-row md:flex-col overflow-hidden;
+}
+
+.post-list-img {
+    @apply w-64 h-full md:w-full md:h-32 md:rounded-lg overflow-hidden;
+}
+
+.post-list-body {
+    @apply flex flex-col justify-around md:gap-2 text-xs;
+}
+
+.post-title {
+    @apply font-bold;
+}
+
+.post-desc {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    @apply overflow-hidden;
+}
+
+.post-desc p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    @apply overflow-hidden w-full;
+}
+
+.post-content main p img {
+    /* width: 100%;
+    height: auto; */
+    @apply m-auto;
+}
+
+.post-list-footer {
+    @apply hidden md:flex justify-start;
+}
+
+.post-list-footer span {
+    @apply text-xs py-2 px-4 font-bold border rounded border-primary-color text-primary-color hover:border-secondary-color hover:text-secondary-color transition duration-500;
+}
+
+.post-list-footer-sm {
+    @apply flex md:hidden justify-start;
+}
+
+.post-list-footer-sm span {
+    @apply text-xs py-2 px-4 font-bold border rounded border-primary-color text-primary-color hover:border-secondary-color hover:text-secondary-color transition duration-500;
+}
+
+.sidebar {
+    @apply w-full md:w-[20%];
+}
+
+.sidebar-container {
+    @apply h-[100%] text-xs;
+}
+
+.sidebar-widget-title {
+    @apply font-bold border-l border-l-4 border-l-primary-color pl-2 py-1 bg-gray-200;
+}
+
+.sidebar-widget-body {
+    @apply pl-3;
+}

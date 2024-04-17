@@ -1,0 +1,213 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+link {
+    color: #cc4ca6;
+}
+
+.installation-body-bg {
+    @apply bg-[#fafcfe] dark:bg-gray-900;
+}
+
+.installation-logo {
+    @apply text-gray-700 dark:text-slate-300;
+}
+
+.installation-container {
+    @apply w-96 h-auto max-h-[80%] bg-slate-50 dark:bg-slate-900 dark:text-gray-300 border rounded-lg border-slate-100 dark:border-slate-700 shadow-lg p-4 text-gray-700;
+}
+
+.installation-container input[type=text] {
+    @apply dark:bg-slate-900 dark:text-gray-300;
+}
+
+.installation-welcome {
+    @apply border-b dark:border-b-slate-700 pb-2 text-2xl font-bold;
+}
+
+.installation-submit {
+    @apply bg-orange-500 hover:bg-orange-600 text-white p-2 text-center rounded-lg w-32 transition duration-500;
+}
+
+.dashboard-menu-grp {
+    @apply mx-auto z-20;
+}
+
+.dashboard-menu-fixed-bg {
+    @apply bg-white fixed mt-32 left-0 h-full z-0 w-16 md:w-[18vw] lg:w-[16vw] xl:w-[12vw] shadow-md;
+}
+
+.dashboard-menu {
+    @apply flex items-center justify-between hover:text-black transition ease-in-out duration-500;
+}
+
+.dashboard-menu-li {
+    @apply hidden md:inline-block;
+}
+
+.dashboard-menu-container {
+    @apply px-4 sm:px-6 lg:px-8 mt-8 w-16 md:w-[18vw] lg:w-[16vw] xl:w-[12vw];
+}
+
+.dashboard-menu-container-fixed {
+    @apply fixed h-[75vh] w-12 sm:w-10 md:w-[12vw] lg:w-[12vw] xl:w-[8vw] overflow-y-auto;
+}
+
+.dashboard-contents {
+    @apply mt-12 w-11/12 mr-8;
+}
+
+.post-body {
+    @apply flex flex-col gap-8 w-full lg:w-8/12;
+}
+
+.post-form-container {
+    @apply w-full lg:w-1/4 text-sm;
+}
+
+.post-publish-btn {
+    @apply px-2 py-1 bg-blue-500 text-white rounded border border-blue-600 hover:bg-blue-600 cursor-pointer;
+}
+
+.post-savedraft-btn {
+    @apply px-2 py-1 bg-blue-100 rounded border border-blue-300 hover:bg-blue-200;
+}
+
+.post-preview-btn {
+    @apply px-2 py-1 bg-blue-500 text-white rounded border border-blue-600 hover:bg-blue-600 cursor-pointer;
+}
+
+.post-update-btn {
+    @apply px-2 py-1 bg-blue-500 text-white rounded-l border border-blue-600 hover:bg-blue-600 cursor-pointer;
+}
+
+.post-edit-update-btn {
+    @apply flex items-center justify-center px-2 py-1 bg-blue-500 text-white rounded-r border border-l-0 border-blue-600 hover:bg-blue-600 cursor-pointer;
+}
+
+.post-edit-update-options-btns {
+    @apply px-2 py-1 hover:bg-blue-600 text-white cursor-pointer;
+}
+
+.post-cancel-btn {
+    @apply px-2 py-1 bg-red-100 rounded border border-red-300 hover:bg-red-200;
+}
+
+.post-select-img-btn {
+    @apply px-2 py-1 bg-blue-100 rounded border border-blue-300 hover:bg-blue-200;
+}
+
+.appearance-container {
+    @apply w-full h-full;
+}
+
+.appearance-items {
+    @apply w-full md:w-[560px] lg:w-[640px] xl:w-[60%] mx-auto h-full flex gap-x-48 gap-y-16 flex-wrap items-center justify-start md:justify-center;
+}
+
+.appearance-item-container {
+    @apply h-full bg-gray-50;
+}
+
+.appearance-item {
+    @apply w-40 h-40 flex flex-col items-center justify-center gap-4 hover:text-green-500 transition duration-500 rounded-2xl shadow-lg;
+}
+
+.appearance-item svg {
+    @apply text-black hover:text-green-500 transition duration-500;
+}
+
+.menu-text-input {
+    @apply border border-gray-400 rounded-lg w-full;
+}
+
+.widgets-customize-container {
+    @apply flex flex-wrap items-start;
+}
+
+.widgets-customize-list-widgets {
+    @apply flex w-[48%] flex-wrap gap-4;
+}
+
+.widgets-customize-list-widget-areas {
+    @apply flex w-[48%] flex-wrap gap-4;
+}
+
+.widget-input {
+    @apply border border-gray-400 rounded-lg w-full text-sm h-8;
+}
+
+.widget-done {
+    @apply inline-block px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white text-sm rounded cursor-pointer transition duration-500;
+}
+
+.widget-remove {
+    @apply inline-block text-blue-800 hover:text-blue-900 text-sm cursor-pointer underline;
+}
+
+.draggable .collapsed {
+    @apply hidden;
+}
+
+.draggable .widget-chevron {
+    @apply hidden;
+}
+
+.dropzone .widget-chevron {
+    @apply block;
+}
+
+.widget-title {
+    @apply flex items-center justify-between px-4;
+}
+
+.draggable .widget-title {
+    @apply flex items-center justify-center px-4;
+}
+
+.theme-container {
+    @apply flex flex-col gap-2 w-full h-64 sm:w-[210px] sm:h-[200px] md:w-[360px] md:h-[250px] border bg-gray-50 shadow-lg rounded overflow-hidden;
+}
+
+.theme-img-container {
+    @apply w-full h-[200px] sm:h-[150px] md:h-[200px] border-b;
+}
+
+.theme-name-container {
+    @apply flex items-center justify-between px-4 font-bold text-black;
+}
+
+.theme-activate-container {
+    @apply bg-blue-500 hover:bg-blue-600 px-2 py-1 text-white text-sm font-normal rounded cursor-pointer transition duration-500;
+}
+
+.sub-list {
+    @apply flex w-full items-center gap-4;
+}
+
+.sub-list-btn {
+    @apply justify-self-end ml-auto hidden lg:inline-block;
+}
+
+.media-img-container {
+    @apply relative w-full md:w-40 h-40 overflow-hidden rounded-lg border shadow-lg;
+}
+
+.media-img-container-options {
+    border-radius: 10px 10px 0px 0px;
+    @apply flex items-center p-4 absolute w-full h-[80%] top-[20%] bg-white opacity-0 hover:opacity-80 transition duration-500 ease-in-out;
+}
+
+.media-img-container-options::backdrop {
+    filter: blur(5px);
+}
+
+.media-preview-backdrop {
+    @apply fixed top-0 left-0 z-40 h-full w-full bg-black/90 justify-center items-center transition duration-500;
+}
+
+.media-preview-object {
+    @apply w-[80%] h-[80%] m-auto;
+}

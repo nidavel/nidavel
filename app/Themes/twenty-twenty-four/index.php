@@ -1,0 +1,3 @@
+<?php
+
+registerWidgetArea('right-sidebar');

@@ -1,0 +1,28 @@
+{
+  "name": "twenty-twenty-three",
+  "version": "0.0.1",
+  "description": "A theme for the Blasta Content Management System",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "npx tailwindcss -i ./src/css/input.css -o ./assets/css/style.css --watch",
+    "build": "npx webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ikennaf1/twenty-twenty-three.git"
+  },
+  "keywords": [
+    "theme",
+    "blasta"
+  ],
+  "author": "Ikenna Isiogu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ikennaf1/twenty-twenty-three/issues"
+  },
+  "homepage": "https://github.com/Ikennaf1/twenty-twenty-three#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.3.3"
+  }
+}
