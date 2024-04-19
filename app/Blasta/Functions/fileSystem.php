@@ -83,6 +83,10 @@ function deleteDir(string $path, bool $recursive = false)
  */
 function rrmdir($path)
 {
+    if (!file_exists($path)) {
+        return;
+    }
+    
     $it = new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS);
     $files = new RecursiveIteratorIterator($it,
                  RecursiveIteratorIterator::CHILD_FIRST);
