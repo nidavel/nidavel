@@ -22,11 +22,13 @@ $update_exports_on_post_publish =
         <select class="border border-gray-400 rounded-lg w-full" name="homepage" id="">
             <option <?= $currHomepage === 'default' ? 'selected' : '' ?> value="default">Default</option>
             <?php
-            foreach ($pages as $page) {
-                $option = '<option value="'.$page['link'].'"';
-                $option .= $currHomepage == $page['link'] ? 'selected' : '';
-                $option .= '>'.$page['title'].'</option>';
-                echo $option;
+            if (!is_null($pages)) {
+                foreach ($pages as $page) {
+                    $option = '<option value="'.$page['link'].'"';
+                    $option .= $currHomepage == $page['link'] ? 'selected' : '';
+                    $option .= '>'.$page['title'].'</option>';
+                    echo $option;
+                }
             }
             ?>
         </select>

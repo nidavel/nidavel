@@ -56,6 +56,10 @@ function getDirectories(string $dir)
 function getFiles(string $dir)
 {
     $files = [];
+    if (!file_exists($dir)) {
+        return $files;
+    }
+    
     $dir = new DirectoryIterator($dir);
     foreach ($dir as $fileinfo) {
         if (!$fileinfo->isDot() && $fileinfo->isFile()) {

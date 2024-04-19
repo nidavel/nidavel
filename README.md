@@ -1,22 +1,22 @@
-## About Blasta
+## About Nidavel
 
-Blasta is a Content Management System built with Laravel which focuses on producing beautiful, professional static content. Think of it as a WordPress for Laravel, with the ability to generate static contents of the whole website.
+Nidavel is a Content Management System built with Laravel which focuses on producing beautiful, professional static content. Think of it as a WordPress for Laravel, with the ability to generate static contents of the whole website.
 
-<!-- Blasta is accessible, powerful, and provides tools required for robust static content management. -->
+<!-- Nidavel is accessible, powerful, and provides tools required for robust static content management. -->
 
 ## Requirements
 - PHP version 8 minimum
 - Composer version 2 minimum
 
 ## Quick start
-- Get Blasta
+- Get Nidavel
     ```
-    git clone https://github.com/Ikennaf1/blasta.git
+    git clone https://github.com/nidavel/nidavel.git
     ```
 
 - Install
     ```
-    cd blasta
+    cd Nidavel
     ```
     
     Install dependencies
@@ -44,4 +44,4 @@ Blasta is a Content Management System built with Laravel which focuses on produc
 
 ## License
 
-Blasta is open-sourced software licensed under the [GPL-2.0 license](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html).
+Nidavel is open-sourced software licensed under the [GPL-2.0 license](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html).

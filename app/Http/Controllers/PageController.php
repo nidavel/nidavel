@@ -123,7 +123,11 @@ class PageController extends Controller
             ];
         }
 
-        return $pagesFinal;
+        if (!empty($pagesFinal)) {
+            return $pagesFinal;
+        }
+
+        return null;
     }
 
     /**
