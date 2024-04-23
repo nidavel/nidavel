@@ -5,6 +5,7 @@
 public/assets
 public/uploads
 public/my_exports
+/database/database.sqlite
 app/Plugins/*/ACTIVE
 /storage/*.key
 /vendor

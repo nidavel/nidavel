@@ -3,10 +3,13 @@ use App\Http\Controllers\PageController;
 $currHomepage = settings('r', 'general.homepage');
 $pageController = new PageController;
 $pages = $pageController->listForSettings();
+
 $update_exports_on_post_publish =
     !empty(settings('r', 'general.update_exports_on_post_publish'))
         ? 'checked'
         : '';
+
+$protocol = settings('r', 'general.protocol');
 ?>
 
 <div class="w-64">
@@ -32,6 +35,23 @@ $update_exports_on_post_publish =
             }
             ?>
         </select>
+    </label>
+</div>
+
+<div class="w-64">
+    <label class="flex flex-col gap-2">
+        <div>Protocol</div>
+        <select class="border border-gray-400 rounded-lg w-full" name="protocol" id="">
+            <option <?= $protocol === 'http' ? 'selected' : '' ?> value="http">HTTP</option>
+            <option <?= $protocol === 'https' ? 'selected' : '' ?> value="https">HTTPS</option>
+        </select>
+    </label>
+</div>
+
+<div class="w-64">
+    <label class="flex flex-col gap-2">
+        <div>Domain (Fill this value only when you have a registered domain)</div>
+        <input class="border border-gray-400 rounded-lg w-full" type="text" name="domain" id="" placeholder="example.com" value="<?= settings('r', 'general.domain') ?>">
     </label>
 </div>
 

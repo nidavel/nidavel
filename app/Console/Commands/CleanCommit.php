@@ -42,7 +42,7 @@ class CleanCommit extends Command
 
         // Resets the settings file
         $fp = fopen(base_path('app/Blasta/settings.json'), 'w');
-        fwrite($fp, '{"general":{"name":"Nidavel","homepage":"default","query_limit":10},"menu":[]}');
+        fwrite($fp, '{"general":{"name":"Nidavel","homepage":"default","query_limit":10,"protocol":"http"},"menu":[]}');
         fclose($fp);
 
         // Remove the /public/assets symbolic directory
