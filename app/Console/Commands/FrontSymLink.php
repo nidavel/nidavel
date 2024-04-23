@@ -12,7 +12,7 @@ class FrontSymLink extends Command
      *
      * @var string
      */
-    protected $signature = 'front:link {resource : The resource to be linked from}';
+    protected $signature = 'nidavel:front-link {resource : The resource to be linked from} {--my_exports}';
 
     /**
      * The console command description.
@@ -38,9 +38,15 @@ class FrontSymLink extends Command
      */
     public function handle()
     {
-        $target = base_path('/resources/views/front/' . $this->argument('resource'));
+        $target = base_path('resources/views/front/' . $this->argument('resource'));
         $target = str_replace('\\', '/', $target);
-        $link   = base_path('/public/' . $this->argument('resource'));
+
+        if ($this->option('my_exports')) {
+            $link   = base_path('public/my_exports/' . $this->argument('resource'));
+        } else {
+            $link   = base_path('public/' . $this->argument('resource'));
+        }
+
         $link   = str_replace('\\', '/', $link);
         symlink($target, $link);
     }
