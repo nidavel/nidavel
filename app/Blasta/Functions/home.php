@@ -14,7 +14,7 @@ function home()
             ->where('status', 'published')
             ->latest()
             ->orderBy('id', 'DESC')
-            // ->limit($limit)
+            ->limit($limit)
             ->get();
         return view('front.posts', [
             "posts" => $posts

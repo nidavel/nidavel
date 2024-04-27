@@ -32,6 +32,16 @@ function settings(string $mode, string $settings, string $value = '')
         case 'w':
             $theSettings->add($key, [$setting => $value]);
             break;
+        case 'a':
+            if (!empty($allSettings[$key][$setting])) {
+                $tempSettings = $theSettings->get($key, $setting);
+                $finalValue = $tempSettings.$value;
+            } else {
+                $finalValue = $value;
+            }
+
+            $theSettings->add($key, [$setting => $finalValue]);
+            break;
         case 'd':
             $theSettings->clear($key);
             break;

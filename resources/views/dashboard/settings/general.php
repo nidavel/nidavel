@@ -40,6 +40,13 @@ $protocol = settings('r', 'general.protocol');
 
 <div class="w-64">
     <label class="flex flex-col gap-2">
+        <div>Query limit</div>
+        <input class="border border-gray-400 rounded-lg w-full" type="number" name="query_limit" id=""  value="<?= settings('r', 'general.query_limit') ?>">
+    </label>
+</div>
+
+<div class="w-64">
+    <label class="flex flex-col gap-2">
         <div>Protocol</div>
         <select class="border border-gray-400 rounded-lg w-full" name="protocol" id="">
             <option <?= $protocol === 'http' ? 'selected' : '' ?> value="http">HTTP</option>
