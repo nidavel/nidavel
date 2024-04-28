@@ -1,0 +1,15 @@
+{
+    "name": "nidavel/sitemap",
+    "description": "Sitemap generator for Nidavel",
+    "autoload": {
+        "psr-4": {
+            "Nidavel\\Sitemap\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nidavel"
+        }
+    ],
+    "require": {}
+}
