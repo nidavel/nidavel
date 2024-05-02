@@ -33,11 +33,11 @@ $tags = $newTags;
 <div>
     <?php
     if (!empty($tags)) {
-        for ($x = 0; $x < $tagCount; $x++) {
-            $link = exportLink('/tags/'.$tags[$x]);
+        foreach ($tags as $tag) {
+            $link = exportLink('tags/'.titleToLink($tag));
             $output = "<a href=\"$link\" class=\"widget-link\">";
             $output .= '<span class="pill">';
-            $output .= $tags[$x]."</span></a>";
+            $output .= $tag."</span></a>";
             echo $output;
         }
     }

@@ -266,6 +266,103 @@ class ExportController extends Controller
     }
 
     /**
+     * Exports post pages
+     */
+    public function exportPages()
+    {
+        $posts = Post::where('status', 'published')
+            ->where('post_type', 'page')
+            ->orderBy('id', 'ASC')
+            ->get();
+
+        foreach ($posts as $post) {
+            $id = $post->id;
+
+            if ($post->deleted_at !== null) {
+                session()->flash('error', 'Deleted post can not be exported');
+                return redirect()->back();
+            }
+
+            if (!file_exists(public_path('/my_exports'))) {
+                mkdir(public_path('/my_exports'));
+            }
+
+            if (!file_exists(public_path('/my_exports/pages'))) {
+                mkdir(public_path('/my_exports/pages'));
+            }
+
+            $link = $post->link == null
+                ? titleToLink($post->title)
+                : $post->link;
+
+            $fp = fopen("my_exports/pages/$link" . '.html', 'w');
+
+            $port = config('app.env') == 'production'
+                ? ''
+                : ':8001';
+            
+            $options = array(
+                CURLOPT_URL             => env('APP_URL') . $port . '/pages/' . $id,
+                CURLOPT_ENCODING        => 'gzip',
+                CURLOPT_RETURNTRANSFER  => true
+            );
+            $ch = curl_init();
+            curl_setopt_array($ch, $options);
+            $res = curl_exec($ch);
+            curl_close($ch);
+
+            fwrite($fp, $res);
+            fclose($fp);
+        }
+
+        $this->exportFilePages();
+
+        return redirect()->back();
+    }
+
+    /**
+     * Exports file pages
+     */
+    public function exportFilePages()
+    {
+        $filePages = getFiles(front_path('/pages'));
+
+        if (!file_exists(public_path('/my_exports'))) {
+            mkdir(public_path('/my_exports'));
+        }
+
+        if (!file_exists(public_path('/my_exports/pages'))) {
+            mkdir(public_path('/my_exports/pages'));
+        }
+
+        foreach ($filePages as $page) {
+            $link = rtrim($page, '.blade.php');
+            $link = spaceToDash($link);
+
+            $fp = fopen("my_exports/pages/$link" . '.html', 'w');
+
+            $port = config('app.env') == 'production'
+                ? ''
+                : ':8001';
+            
+            $options = array(
+                CURLOPT_URL             => env('APP_URL') . $port . '/pages/' . $link,
+                CURLOPT_ENCODING        => 'gzip',
+                CURLOPT_RETURNTRANSFER  => true
+            );
+            $ch = curl_init();
+            curl_setopt_array($ch, $options);
+            $res = curl_exec($ch);
+            curl_close($ch);
+
+            fwrite($fp, $res);
+            fclose($fp);
+        }
+
+        return redirect()->back();
+    }
+
+    /**
      * Deletes the specified exported post
      */
     public function deletePost(Post $post, $postType = 'post')

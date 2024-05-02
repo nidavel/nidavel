@@ -33,3 +33,5 @@ Route::get('/assets', [ExportController::class, 'exportAssets']);
 
 
 Route::get('/posts', [ExportController::class, 'exportPosts']);
+Route::get('/pages', [ExportController::class, 'exportPages']);
+Route::get('/file-pages', [ExportController::class, 'exportFilePages']);

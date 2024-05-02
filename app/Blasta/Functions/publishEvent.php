@@ -5,7 +5,7 @@
 | to trigger a function on any of the publish events
 */
 
-function runOnPostPublish(string|array $function = null)
+function runOnPostPublish(string|array|callable $function = null)
 {
     static $functions;
 
@@ -30,10 +30,12 @@ function runFunctionsPostPublished()
     
     if (!empty($functions)) {
         foreach ($functions as $function) {
-            if (function_exists($function)) {
-                $function();
-            } else {
-                throw new Exception("FUnction $function does not exist", 1);
+            if (is_string($function)) {
+                if (function_exists($function)) {
+                    $function();
+                } else {
+                    throw new Exception("Function $function does not exist", 1);
+                }
             }
         }
     }

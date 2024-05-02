@@ -268,13 +268,17 @@ class PageController extends Controller
         if ($queryString != (int) $queryString) {
             $post = Post::where('link', $queryString)
                 ->where('post_type', 'page')
-                ->firstOrFail();
+                ->first();
         } else {
             $post = Post::where('id', (int) $queryString)
                 ->where('post_type', 'page')
-                ->firstOrFail();
+                ->first();
         }
 
+        if (is_null($post)) {
+            return view('front.pages.' . $queryString);
+        }
+        
         $post->author = User::find($post->user_id)->name;
 
         return view('front.page', [
