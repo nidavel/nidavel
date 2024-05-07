@@ -45,6 +45,9 @@ class CleanCommit extends Command
         fwrite($fp, '{"general":{"name":"Nidavel","homepage":"default","query_limit":10,"protocol":"http"},"menu":[]}');
         fclose($fp);
 
+        // Compiles all functions to single file
+        compileFuncs();
+
         // Remove the /public/assets symbolic directory
         // rrmdir(public_path('/assets'));
 

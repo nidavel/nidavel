@@ -17,6 +17,7 @@ function postHead($post = null)
         $postHeads[] = '<meta name="author" content="'.$post->author.'" />';
         $postHeads[] = '<meta name="description" content="'.$post->description.'" />';
         $postHeads[] = '<meta name="keywords" content="'.$post->keywords.'" />';
+        $postHeads[] = '<meta name="theme-color" content="'.settings('r', 'general.theme_color').'" />';
         $postHeads[] = '<title>'.$post->title.'</title>';
 
         $postHeads[] = '<meta property="og:title" content="'.$post->title.'" />';

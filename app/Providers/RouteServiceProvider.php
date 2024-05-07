@@ -73,6 +73,10 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/widgets.php'));
 
             Route::middleware('web')
+                ->prefix('customize-theme')
+                ->group(base_path('routes/customize-theme.php'));
+
+            Route::middleware('web')
                 ->prefix('exports')
                 ->group(base_path('routes/exports.php'));
 
