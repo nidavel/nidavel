@@ -1,7 +1,6 @@
 <?php
 
 require_once base_path('/app/Blasta/Classes/Settings.php');
-// require_once '../Classes/Settings.php';
 
 function addMenu(string $title, string $url, ?string $target = null)
 {

@@ -18,4 +18,7 @@ use App\Http\Middleware\BlastaDashboard;
 Route::get('/', [CustomizeThemeController::class, 'index'])
     ->middleware(BlastaDashboard::class);
 
+Route::get('/remove-customized-style-name/{name}', [CustomizeThemeController::class, 'removeCustomizedStyleName']);
+Route::get('/add-customized-style-name/{name}', [CustomizeThemeController::class, 'addCustomizedStyleName']);
+
 Route::post('/set-theme-color', [CustomizeThemeController::class, 'setThemeColor']);

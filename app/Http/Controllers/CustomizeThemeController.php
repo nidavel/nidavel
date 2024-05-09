@@ -17,4 +17,14 @@ class CustomizeThemeController extends Controller
 
         return redirect()->back();
     }
+
+    public function removeCustomizedStyleName(Request $request)
+    {
+        return removeCustomizedStyleName($request->name);
+    }
+
+    public function addCustomizedStyleName(Request $request)
+    {
+        return addCustomizedStyleName($request->name);
+    }
 }

@@ -211,3 +211,11 @@ link {
 .media-preview-object {
     @apply w-[80%] h-[80%] m-auto;
 }
+
+.customize-each-container {
+    @apply flex flex-col gap-8 border w-[42vw] bg-gray-50 border-gray-200 rounded p-4;
+}
+
+.customize-submit-btn {
+    @apply rounded text-sm px-4 py-2 cursor-pointer bg-black hover:bg-black/80 text-white transition duration-500;
+}

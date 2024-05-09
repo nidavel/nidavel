@@ -70,6 +70,7 @@ class UrlExports
                         continue;
                     }
                     preg_match('/src=\".+\"/', $line, $matches);
+                    // preg_match("/\bsrc=\".+\" \b/", $line, $matches);
                     $str = $matches[0];
                     for ($x=0, $y=0; $x<2; $y++) {
                         if ($str[$y] == '"') {
@@ -86,6 +87,8 @@ class UrlExports
                     $imgs[] = $imgUrl;
                 }
                 $contents[$i]['images'] = $imgs;
+
+                fclose($fp);
 
                 $i++;
             }
