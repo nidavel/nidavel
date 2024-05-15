@@ -213,7 +213,7 @@ link {
 }
 
 .customize-each-container {
-    @apply flex flex-col gap-8 border w-[42vw] bg-gray-50 border-gray-200 rounded p-4;
+    @apply flex flex-col gap-8 border w-full bg-gray-50 border-gray-200 rounded p-4;
 }
 
 .customize-submit-btn {

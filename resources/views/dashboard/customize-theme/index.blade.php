@@ -1,7 +1,7 @@
 <?php
 $themeColor = settings('r', 'general.theme_color') ?? '#000000';
 
-$customizableSelectors = getCustomizeableSelectors();
+$customizableSelectors = getCustomizeableSelectors() ?? [];
 ?>
 
 <div class="flex flex-col gap-8">
@@ -36,68 +36,116 @@ $customizableSelectors = getCustomizeableSelectors();
                 @foreach ($selectors as $selector => $properties)
                     <div class="flex flex-col mt-4">
                         <label class="mt-4 flex gap-4 items-center">
-                            <input class="w-4 h-4 rounded-full" type="checkbox" id="" onchange="toggleProperty(this)">
+                            <input class="w-4 h-4 rounded-full" type="checkbox" id="" onchange="toggleProperty(this)" {{ isSelectorCustomized("$name'$selector") == true ? 'checked' : '' }}>
                             <div>{{$selector}}</div>
                         </label>
 
-                        <div>
-                            <fieldset class="ml-4 mt-4 flex flex-col gap-4">
+                        <div class="flex justify-start items-center gap-16 flex-wrap">
+                            <fieldset class="ml-4 mt-4 flex flex-col gap-4" {{ isSelectorCustomized("$name'$selector") == true ? '' : 'disabled' }}>
                                 @foreach ($properties as $property)
+                                @php
+                                $val = getCustomizedPropertyValue("$name'$selector'$property");
+                                if (strlen($val) > 10) {
+                                    $r = getRedFromPropertyValue($val);
+                                    $g = getGreenFromPropertyValue($val);
+                                    $b = getBlueFromPropertyValue($val);
+                                    $a = getAlphaFromPropertyValue($val);
+                                }
+                                @endphp
                                 <div class="flex flex-col gap-4">
                                     <div class="flex items-center gap-4">
-                                        <input class="w-4 h-4 rounded-full" type="checkbox" name="{{"$name-$selector-$property"}}" id="" onchange="toggleProperty(this)">
+                                        <input class="w-4 h-4 rounded-full" type="checkbox" name="{{"$name-$selector-$property"}}" id="" onchange="toggleProperty(this)" {{ isPropertyCustomized("$name'$selector'$property") == true ? 'checked' : '' }}>
                                         <div>{{$property}}</div>
                                     </div>
 
                                     <div class="px-8">
-                                        <fieldset>
+                                        <fieldset {{ isPropertyCustomized("$name'$selector'$property") == true ? '' : 'disabled' }}>
                                             <input type="hidden" name="selector" value="{{$selector}}">
                                             <div class="flex gap-4">
                                                 <input type="hidden" name="name" value="{{$name}}">
                                             </div>
                                             <div class="flex flex-col gap-4">
                                                 <div class="flex gap-8 justify-start items-start">
-                                                    <div class="flex flex-col w-96 gap-8 justify-start">
-                                                        <div class="flex gap-2">
-                                                            <div>R</div>
+                                                    <div class="flex w-full gap-8 justify-start flex-wrap">
+
+                                                        <div class="flex flex-col gap-2 items-center">
                                                             <div>
-                                                                <input class="" type="range" name="red" min="0" max="255" id="">
+                                                                <input class="rounded w-20 text-sm h-8" type="number" min="0" max="255" name="" id="" value="{{$r}}">
+                                                            </div>
+                                                            <div class="flex gap-2">
+                                                                <div>R</div>
+                                                                <div>
+                                                                    <input class="" type="range" name="red" min="0" max="255" id="" value="{{$r}}">
+                                                                </div>
                                                             </div>
                                                         </div>
 
-                                                        <div class="flex gap-2">
-                                                            <div>G</div>
+                                                        <div class="flex flex-col gap-2 items-center">
                                                             <div>
-                                                                <input class="" type="range" name="green" min="0" max="255" id="">
+                                                                <input class="rounded w-20 text-sm h-8" type="number" min="0" max="255" name="" id="" value="{{$g}}">
+                                                            </div>
+                                                            <div class="flex gap-2">
+                                                                <div>G</div>
+                                                                <div>
+                                                                    <input class="" type="range" name="red" min="0" max="255" id="" value="{{$g}}">
+                                                                </div>
                                                             </div>
                                                         </div>
 
-                                                        <div class="flex gap-2">
-                                                            <div>B</div>
+                                                        <div class="flex flex-col gap-2 items-center">
                                                             <div>
-                                                                <input class="" type="range" name="blue" min="0" max="255" id="">
+                                                                <input class="rounded w-20 text-sm h-8" type="number" min="0" max="255" name="" id="" value="{{$b}}">
+                                                            </div>
+                                                            <div class="flex gap-2">
+                                                                <div>B</div>
+                                                                <div>
+                                                                    <input class="" type="range" name="red" min="0" max="255" id="" value="{{$b}}">
+                                                                </div>
                                                             </div>
                                                         </div>
 
-                                                        <div class="flex gap-2">
-                                                            <div>A</div>
+                                                        <div class="flex flex-col gap-2 items-center">
                                                             <div>
-                                                                <input class="" type="range" name="opacity" min="0" max="100" id="">
+                                                                <input class="rounded w-20 text-sm h-8" type="number" min="0" max="100" name="" id="" value="{{$a}}">
+                                                            </div>
+                                                            <div class="flex gap-2">
+                                                                <div>A</div>
+                                                                <div>
+                                                                    <input class="" type="range" name="red" min="0" max="255" id="" value="{{$a}}">
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="flex items-center justify-center w-32 h-32 rounded border" style="{{$property}}:{{getCustomizedPropertyValue($name."'".$selector."'".$property)}}">Sample text</div>
+                                                    {{-- <div class="flex items-center justify-center w-32 h-32 rounded border" style="{{$property}}:{{getCustomizedPropertyValue($name."'".$selector."'".$property)}}">Sample text</div> --}}
                                                 </div>
                                             </div>
                                         </fieldset>
                                     </div>
-                                    @if ($property !== end($properties))
-                                        <hr class="border-gray-200">
-                                    @endif
                                 </div>
                                 @endforeach
                             </fieldset>
+                            
+                            <div class="flex items-center justify-center w-32 h-32 rounded border" style="
+                                <?php
+                                foreach ($properties as $property) {
+                                    $getPropertyValue = '';
+                                    $propertyValue = '';
+                                    if (isPropertyCustomized("$name'$selector'$property")) {
+                                        $getPropertyValue = $name;
+                                        $getPropertyValue .= '\''.$selector;
+                                        $getPropertyValue .= '\''.$property;
+                                        $propertyValue = getCustomizedPropertyValue($getPropertyValue) ?? null;
+                                        if (is_null($propertyValue)) {
+                                            continue;
+                                        }
+                                        echo $property.':'.$propertyValue.';';
+                                    }
+                                }
+                                ?>
+                                ">Sample text
+                            </div>
                         </div>
+                        {{-- <div class="flex items-center justify-center w-32 h-32 rounded border" style="{{$property}}:{{getCustomizedPropertyValue($name."'".$selector."'".$property)}}">Sample text</div> --}}
                     </div>
                     @if ($selector !== end($selectors))
                         <hr class="border-gray-400">
