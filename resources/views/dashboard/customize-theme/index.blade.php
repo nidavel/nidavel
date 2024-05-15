@@ -45,6 +45,7 @@ $customizableSelectors = getCustomizeableSelectors() ?? [];
                                 @foreach ($properties as $property)
                                 @php
                                 $val = getCustomizedPropertyValue("$name'$selector'$property");
+                                $r = 0; $g = 0; $b = 0; $a = 0;
                                 if (strlen($val) > 10) {
                                     $r = getRedFromPropertyValue($val);
                                     $g = getGreenFromPropertyValue($val);
@@ -111,7 +112,7 @@ $customizableSelectors = getCustomizeableSelectors() ?? [];
                                                             <div class="flex gap-2">
                                                                 <div>A</div>
                                                                 <div>
-                                                                    <input class="" type="range" name="red" min="0" max="255" id="" value="{{$a}}">
+                                                                    <input class="" type="range" name="red" min="0" max="100" id="" value="{{$a}}">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -180,8 +181,6 @@ function toggleProperty(e)
     } else {
         fieldset.disabled = true;
     }
-    // console.log(fieldset);
-    
 }
 
 function toggleName(e, name)

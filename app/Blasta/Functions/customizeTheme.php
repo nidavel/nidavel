@@ -276,7 +276,7 @@ function getAlphaFromPropertyValue(string $input)
 function stripRGBText(string $input)
 {
     $val    = ltrim($input, 'rgba(');
-    $val    = rtrim($val, ')');
+    $val    = rtrim($val, '%)');
 
     return $val;
 }
