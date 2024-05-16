@@ -31,12 +31,12 @@ $customizableSelectors = getCustomizeableSelectors() ?? [];
                 <div>{{ dashToSpace(ucFirst($name)) }}</div>
             </div>
 
-            <form action="" method="post" class="flex flex-col gap-8 ml-4">
+            <form action="" class="flex flex-col gap-8 ml-4" onsubmit="submitStyleForm(this, '{{$name}}');return false">
                 <fieldset {{ isStyleCustomized($name) == true ? '' : 'disabled' }}>
                 @foreach ($selectors as $selector => $properties)
                     <div class="flex flex-col mt-4">
                         <label class="mt-4 flex gap-4 items-center">
-                            <input class="w-4 h-4 rounded-full" type="checkbox" id="" onchange="toggleProperty(this)" {{ isSelectorCustomized("$name'$selector") == true ? 'checked' : '' }}>
+                            <input class="w-4 h-4 rounded-full" type="checkbox" id="" onchange="toggleProperty(this, 'selector')" {{ isSelectorCustomized("$name'$selector") == true ? 'checked' : '' }}>
                             <div>{{$selector}}</div>
                         </label>
 
@@ -46,78 +46,74 @@ $customizableSelectors = getCustomizeableSelectors() ?? [];
                                 @php
                                 $val = getCustomizedPropertyValue("$name'$selector'$property");
                                 $r = 0; $g = 0; $b = 0; $a = 0;
-                                if (strlen($val) > 10) {
-                                    $r = getRedFromPropertyValue($val);
-                                    $g = getGreenFromPropertyValue($val);
-                                    $b = getBlueFromPropertyValue($val);
-                                    $a = getAlphaFromPropertyValue($val);
+                                if (strlen($val) >= 10) {
+                                    $r = (int) getRedFromPropertyValue($val);
+                                    $g = (int) getGreenFromPropertyValue($val);
+                                    $b = (int) getBlueFromPropertyValue($val);
+                                    // dd($b);
+                                    $a = (int) getAlphaFromPropertyValue($val);
                                 }
                                 @endphp
                                 <div class="flex flex-col gap-4">
                                     <div class="flex items-center gap-4">
-                                        <input class="w-4 h-4 rounded-full" type="checkbox" name="{{"$name-$selector-$property"}}" id="" onchange="toggleProperty(this)" {{ isPropertyCustomized("$name'$selector'$property") == true ? 'checked' : '' }}>
+                                        <input class="w-4 h-4 rounded-full" type="checkbox" name="" id="" onchange="toggleProperty(this)" {{ isPropertyCustomized("$name'$selector'$property") == true ? 'checked' : '' }}>
                                         <div>{{$property}}</div>
                                     </div>
 
                                     <div class="px-8">
                                         <fieldset {{ isPropertyCustomized("$name'$selector'$property") == true ? '' : 'disabled' }}>
-                                            <input type="hidden" name="selector" value="{{$selector}}">
-                                            <div class="flex gap-4">
-                                                <input type="hidden" name="name" value="{{$name}}">
-                                            </div>
                                             <div class="flex flex-col gap-4">
                                                 <div class="flex gap-8 justify-start items-start">
                                                     <div class="flex w-full gap-8 justify-start flex-wrap">
 
                                                         <div class="flex flex-col gap-2 items-center">
                                                             <div>
-                                                                <input class="rounded w-20 text-sm h-8" type="number" min="0" max="255" name="" id="" value="{{$r}}">
+                                                                <input class="rounded w-20 text-sm h-8" type="number" min="0" max="255" name="" id="" value="{{$r}}" oninput="updateSlider(this, '{{toCamel($property)}}', 0)">
                                                             </div>
                                                             <div class="flex gap-2">
                                                                 <div>R</div>
                                                                 <div>
-                                                                    <input class="" type="range" name="red" min="0" max="255" id="" value="{{$r}}">
+                                                                    <input class="" type="range" name="red" min="0" max="255" id="" value="{{$r}}" oninput="updateInputAndDisplay(this, '{{toCamel($property)}}', 0)">
                                                                 </div>
                                                             </div>
                                                         </div>
 
                                                         <div class="flex flex-col gap-2 items-center">
                                                             <div>
-                                                                <input class="rounded w-20 text-sm h-8" type="number" min="0" max="255" name="" id="" value="{{$g}}">
+                                                                <input class="rounded w-20 text-sm h-8" type="number" min="0" max="255" name="" id="" value="{{$g}}" oninput="updateSlider(this, '{{toCamel($property)}}', 1)">
                                                             </div>
                                                             <div class="flex gap-2">
                                                                 <div>G</div>
                                                                 <div>
-                                                                    <input class="" type="range" name="red" min="0" max="255" id="" value="{{$g}}">
+                                                                    <input class="" type="range" name="red" min="0" max="255" id="" value="{{$g}}" oninput="updateInputAndDisplay(this, '{{toCamel($property)}}', 1)">
                                                                 </div>
                                                             </div>
                                                         </div>
 
                                                         <div class="flex flex-col gap-2 items-center">
                                                             <div>
-                                                                <input class="rounded w-20 text-sm h-8" type="number" min="0" max="255" name="" id="" value="{{$b}}">
+                                                                <input class="rounded w-20 text-sm h-8" type="number" min="0" max="255" name="" id="" value="{{$b}}" oninput="updateSlider(this, '{{toCamel($property)}}', 2)">
                                                             </div>
                                                             <div class="flex gap-2">
                                                                 <div>B</div>
                                                                 <div>
-                                                                    <input class="" type="range" name="red" min="0" max="255" id="" value="{{$b}}">
+                                                                    <input class="" type="range" name="red" min="0" max="255" id="" value="{{$b}}" oninput="updateInputAndDisplay(this, '{{toCamel($property)}}', 2)">
                                                                 </div>
                                                             </div>
                                                         </div>
 
                                                         <div class="flex flex-col gap-2 items-center">
                                                             <div>
-                                                                <input class="rounded w-20 text-sm h-8" type="number" min="0" max="100" name="" id="" value="{{$a}}">
+                                                                <input class="rounded w-20 text-sm h-8" type="number" min="0" max="100" name="" id="" value="{{$a*100}}" oninput="updateSlider(this, '{{toCamel($property)}}', 3)">
                                                             </div>
                                                             <div class="flex gap-2">
                                                                 <div>A</div>
                                                                 <div>
-                                                                    <input class="" type="range" name="red" min="0" max="100" id="" value="{{$a}}">
+                                                                    <input class="" type="range" name="red" min="0" max="100" id="" value="{{$a*100}}" oninput="updateInputAndDisplay(this, '{{toCamel($property)}}', 3)">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    {{-- <div class="flex items-center justify-center w-32 h-32 rounded border" style="{{$property}}:{{getCustomizedPropertyValue($name."'".$selector."'".$property)}}">Sample text</div> --}}
                                                 </div>
                                             </div>
                                         </fieldset>
@@ -126,7 +122,7 @@ $customizableSelectors = getCustomizeableSelectors() ?? [];
                                 @endforeach
                             </fieldset>
                             
-                            <div class="flex items-center justify-center w-32 h-32 rounded border" style="
+                            <input class="{{$name}} flex items-center justify-center w-32 h-32 rounded border focus:ring-0 shadow" style="
                                 <?php
                                 foreach ($properties as $property) {
                                     $getPropertyValue = '';
@@ -139,14 +135,12 @@ $customizableSelectors = getCustomizeableSelectors() ?? [];
                                         if (is_null($propertyValue)) {
                                             continue;
                                         }
-                                        echo $property.':'.$propertyValue.';';
+                                        echo $property.':'.parseRGBA($propertyValue).';';
                                     }
                                 }
-                                ?>
-                                ">Sample text
-                            </div>
+                                ?>"
+                            name="{{$selector}}" value="Sample text" readonly {{ isSelectorCustomized("$name'$selector") == true ? '' : 'disabled' }}>
                         </div>
-                        {{-- <div class="flex items-center justify-center w-32 h-32 rounded border" style="{{$property}}:{{getCustomizedPropertyValue($name."'".$selector."'".$property)}}">Sample text</div> --}}
                     </div>
                     @if ($selector !== end($selectors))
                         <hr class="border-gray-400">
@@ -171,15 +165,22 @@ themeColor.onchange = () => {
     themeColorLabel.innerText = `Current color: ${themeColor.value}`;
 }
 
-function toggleProperty(e)
+function toggleProperty(e, elem='property')
 {
     let input = e.parentElement.nextElementSibling;
     let fieldset = input.firstElementChild;
+    let display = e.parentElement.parentElement.lastElementChild.lastElementChild;
     
     if (e.checked == true) {
         fieldset.disabled = false;
+        if (elem == 'selector') {
+            display.disabled = false;
+        }
     } else {
         fieldset.disabled = true;
+        if (elem == 'selector') {
+            display.disabled = true;
+        }
     }
 }
 
@@ -204,5 +205,142 @@ function toggleName(e, name)
         });
     }
     e.disabled = false;
+}
+
+function updateSlider(e, property, index)
+{
+    let slider = e.parentElement.nextElementSibling.lastElementChild.firstElementChild;
+    slider.value = e.value;
+    let display = e.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
+    let oldRGB = display.style[property];
+    let newRGB;
+    
+    
+    oldRGB = splitRGBA(oldRGB);
+
+    switch (index) {
+        case 0:
+            newRGB = combineValuesToRGBA(e.value, oldRGB[1], oldRGB[2], oldRGB[3] ? oldRGB[3] : '100')
+            break;
+        case 1:
+            newRGB = combineValuesToRGBA(oldRGB[0], e.value, oldRGB[2], oldRGB[3] ? oldRGB[3] : '100');
+            break;
+        case 2:
+            newRGB = combineValuesToRGBA(oldRGB[0], oldRGB[1], e.value, oldRGB[3] ? oldRGB[3] : '100');
+            break;
+        case 3:
+            newRGB = combineValuesToRGBA(oldRGB[0], oldRGB[1], oldRGB[2] , `${e.value}`);
+            break;
+        default:
+            newRGB = oldRGB;
+    }
+    display.style[property] = newRGB;
+}
+
+function updateInputAndDisplay(e, property, index)
+{
+    let input = e.parentElement.parentElement.previousElementSibling.firstElementChild;
+    let display = e.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
+    let oldRGB = display.style[property];
+    let newRGB;
+    
+    input.value = e.value;
+    
+    oldRGB = splitRGBA(oldRGB);
+
+    switch (index) {
+        case 0:
+            newRGB = combineValuesToRGBA(e.value, oldRGB[1], oldRGB[2], oldRGB[3] ? oldRGB[3] : '100')
+            break;
+        case 1:
+            newRGB = combineValuesToRGBA(oldRGB[0], e.value, oldRGB[2], oldRGB[3] ? oldRGB[3] : '100');
+            break;
+        case 2:
+            newRGB = combineValuesToRGBA(oldRGB[0], oldRGB[1], e.value, oldRGB[3] ? oldRGB[3] : '100');
+            break;
+        case 3:
+            newRGB = combineValuesToRGBA(oldRGB[0], oldRGB[1], oldRGB[2] , `${e.value}`);
+            break;
+        default:
+            newRGB = oldRGB;
+    }
+    display.style[property] = newRGB;
+}
+
+function combineValuesToRGBA(red, green, blue, alpha=100)
+{
+    let rgba = `rgba(${red}, ${green}, ${blue}, ${alpha/100})`;
+    return rgba;
+}
+
+function splitRGBA(rgba)
+{
+    let leftParentheses = rgba.indexOf('(');
+    let rightParentheses = rgba.indexOf(')');
+    let placeValue = 1;
+    let newRGBA = [0,0,0,0];
+    let newRGBAIndex = 0;
+
+    for (let x = leftParentheses + 1; x < rightParentheses; x++) {
+        if (rgba[x] == ',') {
+            placeValue = 1;
+            newRGBAIndex++;
+            continue;
+        }
+        newRGBA[newRGBAIndex] = (newRGBA[newRGBAIndex] * placeValue) + rgba[x];
+        placeValue << 10;
+    }
+    return newRGBA;
+}
+
+function parseRGBA(rgba)
+{
+    if (rgba.substring(0, 4) === 'rgba') {
+        return rgba;
+    }
+
+    rgba = rgba.replace('rgb', 'rgba');
+    rgba = rgba.replace('rgbaa', 'rgba');
+    rgba = rgba.replace(')', ', 1)');
+
+    return rgba;
+}
+
+function submitStyleForm(e, name)
+{
+    let form = e;
+    let elements = e.elements;
+    let styleNodes = [];
+    let payload = ' ';
+    [...elements].forEach((elem) => {
+        if (!elem.disabled) {
+            if (elem.classList.contains(name)) {
+                styleNodes.push(elem);
+            }
+        }
+    });
+
+    styleNodes.map((styleNode) => {
+        payload += " " + styleNode.name + "{" + styleNode.style.cssText + "}\n";
+    });
+
+    fetch(`/customize-theme/save-customized-style/${name}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        method: 'post',
+        body: JSON.stringify({
+            data: payload
+        })
+    })
+    .then((res) => {
+        if (res.ok) {
+            return res;
+        }
+    })
+    .then((data) => {
+        console.log(data);
+    });
 }
 </script>

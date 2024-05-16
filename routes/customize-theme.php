@@ -20,5 +20,6 @@ Route::get('/', [CustomizeThemeController::class, 'index'])
 
 Route::get('/remove-customized-style-name/{name}', [CustomizeThemeController::class, 'removeCustomizedStyleName']);
 Route::get('/add-customized-style-name/{name}', [CustomizeThemeController::class, 'addCustomizedStyleName']);
+Route::post('/save-customized-style/{name}', [CustomizeThemeController::class, 'saveCustomizedStyle']);
 
 Route::post('/set-theme-color', [CustomizeThemeController::class, 'setThemeColor']);

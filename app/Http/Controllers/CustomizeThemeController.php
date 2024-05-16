@@ -27,4 +27,21 @@ class CustomizeThemeController extends Controller
     {
         return addCustomizedStyleName($request->name);
     }
+
+    public function saveCustomizedStyle(Request $request)
+    {
+        $name = $request->name;
+        $data = $request->data;
+        $file = base_path("app/Blasta/CustomizedStyles/$name");
+
+        if (!file_exists(base_path("app/Blasta/CustomizedStyles"))) {
+            mkdir(base_path("app/Blasta/CustomizedStyles"));
+        }
+
+        $fp = fopen($file, 'w');
+        fwrite($fp, " $data");
+        fclose($fp);
+
+        return response()->json(['data'=>'received']);
+    }
 }

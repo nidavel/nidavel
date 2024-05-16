@@ -202,7 +202,7 @@ function getCustomizedPropertyValue(string $input)
         $value = rtrim($value, ';');
     }
 
-    return "r$value";
+    return "$value";
 }
 
 function readFileLine($fp)
@@ -270,13 +270,31 @@ function getAlphaFromPropertyValue(string $input)
 {
     $val    = stripRGBText($input);
     $val    = explode(',', $val);
-    return  $val[3];
+
+    return  $val[3] ?? 1;
 }
 
 function stripRGBText(string $input)
 {
-    $val    = ltrim($input, 'rgba(');
+    if (strtolower(substr($input, 0, 4)) === 'rgba') {
+        $val    = ltrim($input, 'rgba(');
+    } else {
+        $val    = ltrim($input, 'rgb(');
+    }
     $val    = rtrim($val, ')');
 
     return $val;
+}
+
+function parseRGBA($rgba)
+{
+    if (substr($rgba, 0, 4) === 'rgba') {
+        return $rgba;
+    }
+
+    $rgba = str_replace('rgb', 'rgba', $rgba);
+    $rgba = str_replace('rgbaa', 'rgba', $rgba);
+    $rgba = str_replace(')', ', 1)', $rgba);
+
+    return $rgba;
 }
