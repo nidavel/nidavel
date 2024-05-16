@@ -31,3 +31,24 @@ function dashToSpace(string $str, bool $trimSpaces = true) : string
 
     return $str;
 }
+
+function toCamel(string $str, string $delim='_')
+{
+    $arr = str_split($str);
+    $openDash = false;
+    $newStr = '';
+
+    foreach ($arr as $chr) {
+        if ($chr === $delim) {
+            $openDash = true;
+            continue;
+        }
+        if ($openDash === true) {
+            $chr = strtoupper($chr);
+            $openDash = false;
+        }
+        $newStr .= $chr;
+    }
+
+    return $newStr;
+}
