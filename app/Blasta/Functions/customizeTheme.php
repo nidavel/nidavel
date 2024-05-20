@@ -3,6 +3,14 @@
 require_once base_path('app/Blasta/Functions/settings.php');
 
 /**
+ * Sets the theme color
+ */
+function setThemeColor(string $color)
+{
+    settings('w', 'general.theme_color', $color);
+}
+
+/**
  * This function is used to add customizable selectors
  * for custom editing
  */
@@ -60,6 +68,18 @@ function getCustomizeableSelectors()
 }
 
 /**
+ * This function returns the names of all customized styles
+ */
+function getCustomizedStyleNames()
+{
+    $customizedStyles = settings('r', 'general.customized_style_names');
+    $customizedStyles = explode("'", $customizedStyles);
+    array_shift($customizedStyles);
+
+    return $customizedStyles;
+}
+
+/**
  * Adds a style name to the list of customized styles
  */
 function addCustomizedStyleName(string $name)
@@ -91,6 +111,10 @@ function removeCustomizedStyleName(string $name)
     return true;
 }
 
+/**
+ * This function checks if a given style name 
+ * is added to the customized list
+ */
 function isStyleCustomized(string $name)
 {
     $customizedStyles = settings('r', 'general.customized_style_names');
@@ -102,13 +126,17 @@ function isStyleCustomized(string $name)
     return false;
 }
 
+/**
+ * This function checks if a particular selector is active
+ * in an active customized style
+ */
 function isSelectorCustomized(string $input)
 {
     $value = explode("'", $input);
     $name = $value[0];
     $selector = $value[1];
 
-    if (!isStyleCustomized($name)) {
+    if (isStyleCustomized($name) === false) {
         return false;
     }
 
@@ -122,6 +150,10 @@ function isSelectorCustomized(string $input)
     return false;
 }
 
+/**
+ * This function checks if a particular property is active
+ * in an active selector in an active customized style
+ */
 function isPropertyCustomized(string $input)
 {
     $value = explode("'", $input);
@@ -132,12 +164,12 @@ function isPropertyCustomized(string $input)
         'color'
     ];
 
-    if (!isStyleCustomized($name)) {
+    if (isStyleCustomized($name) === false) {
         return false;
     }
 
     $styleFile = base_path("app/Blasta/CustomizedStyles/$name");
-    $style = file_get_contents(base_path("app/Blasta/CustomizedStyles/$name"));
+    $style = file_get_contents($styleFile);
 
     if (strpos($style, $selector)) {
         $fp = fopen($styleFile, 'r');
@@ -151,8 +183,14 @@ function isPropertyCustomized(string $input)
                 if (in_array($property, $falsePositives)) {
                     $content = substr($line, strpos($line, $property) - 1, strlen($property) + 1);
                     if ($content[0] === '-') {
-                        $content = '';
-                        continue;
+                        $content = substr($line, strpos($line, $property) - 1);
+                        while ($content[0] === '-' && strlen($content) > 0) {
+                            $content = substr($line, strpos($content, $property) - 1);
+                            if ($content[0] !== '-') {
+                                $content = substr($line, strpos($content, $property) - 1, strlen($property) + 1);
+                                break;
+                            }
+                        }
                     }
                     $content = ltrim($content, $content[0]);
                 } else {
@@ -172,6 +210,9 @@ function isPropertyCustomized(string $input)
     return false;
 }
 
+/**
+ * This function gets the value of a given property in a customized style
+ */
 function getCustomizedPropertyValue(string $input)
 {
     $value = null;
@@ -205,13 +246,9 @@ function getCustomizedPropertyValue(string $input)
     return "$value";
 }
 
-function readFileLine($fp)
-{
-    while (!feof($fp)) {
-        yield fgets($fp);
-    }
-}
-
+/**
+ * This function returns the specified property and value of a given selector
+ */
 function getPropertyAndValue(string $line, string $selector, string $property)
 {
     $propIdx = null;
@@ -245,6 +282,9 @@ function getPropertyAndValue(string $line, string $selector, string $property)
     }
 }
 
+/**
+ * This function extracts the red value in an rgba string
+ */
 function getRedFromPropertyValue(string $input)
 {
     $val    = stripRGBText($input);
@@ -252,6 +292,9 @@ function getRedFromPropertyValue(string $input)
     return  $val[0];
 }
 
+/**
+ * This function extracts the green value in an rgba string
+ */
 function getGreenFromPropertyValue(string $input)
 {
     $val    = stripRGBText($input);
@@ -259,6 +302,9 @@ function getGreenFromPropertyValue(string $input)
     return  $val[1];
 }
 
+/**
+ * This function extracts the blue value in an rgba string
+ */
 function getBlueFromPropertyValue(string $input)
 {
     $val    = stripRGBText($input);
@@ -266,6 +312,9 @@ function getBlueFromPropertyValue(string $input)
     return  $val[2];
 }
 
+/**
+ * This function extracts the alpha value in an rgba string
+ */
 function getAlphaFromPropertyValue(string $input)
 {
     $val    = stripRGBText($input);
@@ -274,18 +323,23 @@ function getAlphaFromPropertyValue(string $input)
     return  $val[3] ?? 1;
 }
 
+/**
+ * This funtion takes a rgb or rgba string and returns the values within
+ * the parentheses
+ */
 function stripRGBText(string $input)
 {
-    if (strtolower(substr($input, 0, 4)) === 'rgba') {
-        $val    = ltrim($input, 'rgba(');
-    } else {
-        $val    = ltrim($input, 'rgb(');
-    }
+    $val    = trim($input);
+    $val    = ltrim($val, 'rgba(');
+    $val    = ltrim($val, 'rgb(');
     $val    = rtrim($val, ')');
 
     return $val;
 }
 
+/**
+ * This function converts a rgb string to a rgba string
+ */
 function parseRGBA($rgba)
 {
     if (substr($rgba, 0, 4) === 'rgba') {
@@ -297,4 +351,11 @@ function parseRGBA($rgba)
     $rgba = str_replace(')', ', 1)', $rgba);
 
     return $rgba;
+}
+
+function readFileLine($fp)
+{
+    while (!feof($fp)) {
+        yield fgets($fp);
+    }
 }

@@ -1,6 +1,6 @@
 <?php
 
-require_once base_path('/app/Blasta/Classes/PostHead.php');
+require_once base_path('/app/Blasta/Classes/Head.php');
 
 /**
  * The meta tags in the post head
@@ -11,7 +11,7 @@ function postHead($post = null)
     $domain = settings('r', 'general.domain');
 
     $postHeadString = '';
-    $postHeadMeta = PostHead::get();
+    $postHeadMeta = Head::get();
 
     if ($post !== null) {
         $postHeads[] = '<meta name="author" content="'.$post->author.'" />';
@@ -39,9 +39,40 @@ function postHead($post = null)
 }
 
 /**
+ * The customized style to the head 
+ */
+function customizedStyles()
+{
+    $style = '';
+    $styleNames = getCustomizedStyleNames();
+
+    if (!empty($styleNames)) {
+        $style .= "<style>\n";
+    } else {
+        return null;
+    }
+
+    foreach ($styleNames as $styleName) {
+        $style .= file_get_contents(base_path("app/Blasta/CustomizedStyles/$styleName"));
+    }
+
+    $style .= "\n</style>";
+
+    return $style;
+}
+
+/**
+ * Adds customized style to the document
+ */
+function addCustomizedStyle()
+{
+    return customizedStyles();
+}
+
+/**
  * Appends to post head
  */
-function appendToPostHead(string $meta)
+function appendToHead(string $node)
 {
-    PostHead::append($meta);
+    Head::append($node);
 }
