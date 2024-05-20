@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="{{ homeUrl('/assets/css/style.css', 1) }}">
         <script type="text/javascript" src="{{ homeUrl('/assets/js/script.js', 1) }}" defer></script>
         {!! postHead($post) !!}
+        {!!addCustomizedStyle()!!}
     </head>
 
     <body>

@@ -46,17 +46,16 @@ $customizableSelectors = getCustomizeableSelectors() ?? [];
                                 @php
                                 $val = getCustomizedPropertyValue("$name'$selector'$property");
                                 $r = 0; $g = 0; $b = 0; $a = 0;
-                                if (strlen($val) >= 10) {
+                                if (strlen($val) >= 7) {
                                     $r = (int) getRedFromPropertyValue($val);
                                     $g = (int) getGreenFromPropertyValue($val);
                                     $b = (int) getBlueFromPropertyValue($val);
-                                    // dd($b);
                                     $a = (int) getAlphaFromPropertyValue($val);
                                 }
                                 @endphp
                                 <div class="flex flex-col gap-4">
                                     <div class="flex items-center gap-4">
-                                        <input class="w-4 h-4 rounded-full" type="checkbox" name="" id="" onchange="toggleProperty(this)" {{ isPropertyCustomized("$name'$selector'$property") == true ? 'checked' : '' }}>
+                                        <input class="w-4 h-4 rounded-full" type="checkbox" name="" id="" value="{{$property}}" onchange="toggleProperty(this)" {{ isPropertyCustomized("$name'$selector'$property") == true ? 'checked' : '' }}>
                                         <div>{{$property}}</div>
                                     </div>
 
@@ -169,7 +168,18 @@ function toggleProperty(e, elem='property')
 {
     let input = e.parentElement.nextElementSibling;
     let fieldset = input.firstElementChild;
-    let display = e.parentElement.parentElement.lastElementChild.lastElementChild;
+    let display;
+    switch (elem) {
+        case 'selector':
+            display = e.parentElement.parentElement.lastElementChild.lastElementChild;
+            break;
+        case 'property':
+            display = e.parentElement.parentElement.parentElement.parentElement.lastElementChild;
+            break;
+        default:
+            display = e.parentElement.parentElement.lastElementChild;
+            break;
+    }
     
     if (e.checked == true) {
         fieldset.disabled = false;
@@ -178,6 +188,7 @@ function toggleProperty(e, elem='property')
         }
     } else {
         fieldset.disabled = true;
+        display.style.cssText = removeInlineStyle(display.style.cssText, e.value);
         if (elem == 'selector') {
             display.disabled = true;
         }
@@ -342,5 +353,36 @@ function submitStyleForm(e, name)
     .then((data) => {
         console.log(data);
     });
+}
+
+function splitInlineStyle(input)
+{
+    if (input) {
+        return input.split(';');
+    }
+}
+
+function removeInlineStyle(input, property)
+{
+    let finalStyle = '';
+    let styles = splitInlineStyle(input);
+    let newStyle = styles.filter((style) => {
+        let styleProperty = style.split(':')[0];
+        if (property !== styleProperty.trim()) {
+            return true;
+        }
+        return false;
+    });
+
+    newStyle.map((style) => {
+        finalStyle += style;
+    });
+
+    return finalStyle;
+}
+
+function addInlineStyle(input, value)
+{
+    return `${input} ${value};`;
 }
 </script>

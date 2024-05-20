@@ -1,9 +1,9 @@
 <?php
 
-class PostHead
+class Head
 {
     private static $instance = null;
-    private static $meta = "\n";
+    private static $node = "";
 
     private function __construct(){}
     private function __clone(){}
@@ -11,8 +11,8 @@ class PostHead
     public static function getInstance()
     {
         if (static::$instance == null) {
-            static::$instance   = new PostHead;
-            static::$meta       = "\n";
+            static::$instance   = new Head;
+            static::$node       = "\n";
         }
         
         return static::$instance;
@@ -23,14 +23,14 @@ class PostHead
      */
     static function get()
     {
-        return static::$meta;
+        return static::$node;
     }
 
     /**
      * Appends a meta to the global meta
      */
-    static function append(string $meta)
+    static function append(string $node)
     {
-        static::$meta .= "$meta\n";
+        static::$node .= "$node\n";
     }
 }

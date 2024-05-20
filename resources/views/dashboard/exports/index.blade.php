@@ -18,7 +18,7 @@ $i = 0;
 
         <div class="flex flex-col gap-8">
             <div>
-                <p class="font-bold text-lg">Control your exports</p>
+                <p class="font-bold text-lg">Manage your exports</p>
             </div>
 
             <div class="flex flex-wrap gap-16">
@@ -26,9 +26,9 @@ $i = 0;
                     <div class="sub-list">
                         <span class="text-blue-500"><a href="/dashboard?route=exports/all/posts">Posts</a></span>
                         <span class="text-gray-300">|</span>
-                        <span class="text-blue-500"><a href="/dashboard?route=exports/all/homepage">Homepage</a></span>
-                        <span class="text-gray-300">|</span>
                         <span class="text-blue-500"><a href="/dashboard?route=exports/all/pages">Pages</a></span>
+                        <span class="text-gray-300">|</span>
+                        <span class="text-blue-500"><a href="/dashboard?route=exports/all/homepage">Homepage</a></span>
                         <span class="text-gray-300">|</span>
                         {{-- <span class="text-blue-500"><a href="/dashboard?route=exports/all/authors">Authors</a></span>
                         <span class="text-gray-300">|</span>
