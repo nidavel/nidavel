@@ -239,7 +239,7 @@ function getCustomizedPropertyValue(string $input)
 
     fclose($fp);
     if (!empty($matchx)) {
-        $value = ltrim($matchx, $property.':');
+        $value = ltrim($matchx, "$property:");
         $value = rtrim($value, ';');
     }
 
@@ -265,8 +265,12 @@ function getPropertyAndValue(string $line, string $selector, string $property)
         if (in_array($property, $falsePositives)) {
             $content = substr($line, strpos($line, $property) - 1);
 
-            if ($content[0] === '-') {
-                $content = substr($content, strpos($content, ";$property"));
+            while ($content[0] === '-' && strlen($content) > 0) {
+                $content = substr($line, strpos($content, $property) - 1);
+                if ($content[0] !== '-') {
+                    $content = substr($line, strpos($content, $property) - 1, strlen($property) + 1);
+                    break;
+                }
             }
             
             $content = ltrim($content, $content[0]);
@@ -342,7 +346,7 @@ function stripRGBText(string $input)
  */
 function parseRGBA($rgba)
 {
-    if (substr($rgba, 0, 4) === 'rgba') {
+    if (substr(trim($rgba), 0, 4) === 'rgba') {
         return $rgba;
     }
 

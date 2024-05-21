@@ -50,7 +50,7 @@ $customizableSelectors = getCustomizeableSelectors() ?? [];
                                     $r = (int) getRedFromPropertyValue($val);
                                     $g = (int) getGreenFromPropertyValue($val);
                                     $b = (int) getBlueFromPropertyValue($val);
-                                    $a = (int) getAlphaFromPropertyValue($val);
+                                    $a = (float) getAlphaFromPropertyValue($val);
                                 }
                                 @endphp
                                 <div class="flex flex-col gap-4">
@@ -168,13 +168,17 @@ function toggleProperty(e, elem='property')
 {
     let input = e.parentElement.nextElementSibling;
     let fieldset = input.firstElementChild;
-    let display;
+    let display, red, green, blue, alpha;
     switch (elem) {
         case 'selector':
             display = e.parentElement.parentElement.lastElementChild.lastElementChild;
             break;
         case 'property':
             display = e.parentElement.parentElement.parentElement.parentElement.lastElementChild;
+            red     =  e.parentElement.parentElement.lastElementChild.firstElementChild.firstElementChild.firstElementChild.firstElementChild.children[0].lastElementChild.lastElementChild.firstElementChild.value;
+            green   =  e.parentElement.parentElement.lastElementChild.firstElementChild.firstElementChild.firstElementChild.firstElementChild.children[1].lastElementChild.lastElementChild.firstElementChild.value;
+            blue    =  e.parentElement.parentElement.lastElementChild.firstElementChild.firstElementChild.firstElementChild.firstElementChild.children[2].lastElementChild.lastElementChild.firstElementChild.value;
+            alpha   =  e.parentElement.parentElement.lastElementChild.firstElementChild.firstElementChild.firstElementChild.firstElementChild.children[3].lastElementChild.lastElementChild.firstElementChild.value;
             break;
         default:
             display = e.parentElement.parentElement.lastElementChild;
@@ -183,13 +187,19 @@ function toggleProperty(e, elem='property')
     
     if (e.checked == true) {
         fieldset.disabled = false;
-        if (elem == 'selector') {
+        if (elem === 'property') {
+            let rgba = combineValuesToRGBA(red, green, blue, alpha);
+            display.style.cssText = addInlineStyle(display.style.cssText, `${e.value}:${rgba}`);
+        }
+        else if (elem == 'selector') {
             display.disabled = false;
         }
     } else {
         fieldset.disabled = true;
-        display.style.cssText = removeInlineStyle(display.style.cssText, e.value);
-        if (elem == 'selector') {
+        if (elem === 'property') {
+            display.style.cssText = removeInlineStyle(display.style.cssText, e.value);
+        }        
+        else if (elem == 'selector') {
             display.disabled = true;
         }
     }
@@ -323,6 +333,12 @@ function submitStyleForm(e, name)
     let elements = e.elements;
     let styleNodes = [];
     let payload = ' ';
+    let btns = document.querySelectorAll('.customize-submit-btn');
+    [...btns].map((btn) => {
+        btn.disabled = true;
+        btn.value = 'Submitting...';
+    });
+    
     [...elements].forEach((elem) => {
         if (!elem.disabled) {
             if (elem.classList.contains(name)) {
@@ -346,6 +362,10 @@ function submitStyleForm(e, name)
         })
     })
     .then((res) => {
+        [...btns].map((btn) => {
+            btn.disabled = false;
+            btn.value = 'Done';
+        });
         if (res.ok) {
             return res;
         }
@@ -355,27 +375,17 @@ function submitStyleForm(e, name)
     });
 }
 
-function splitInlineStyle(input)
-{
-    if (input) {
-        return input.split(';');
-    }
-}
-
 function removeInlineStyle(input, property)
 {
     let finalStyle = '';
-    let styles = splitInlineStyle(input);
-    let newStyle = styles.filter((style) => {
-        let styleProperty = style.split(':')[0];
-        if (property !== styleProperty.trim()) {
-            return true;
-        }
-        return false;
-    });
+    let styles = input.split(';');
+    let newStyle = styles.filter(
+        (style) => property.trim() !== style.split(':')[0].trim()
+    );
+    console.log(newStyle);
 
     newStyle.map((style) => {
-        finalStyle += style;
+        finalStyle += `${style};`;
     });
 
     return finalStyle;
