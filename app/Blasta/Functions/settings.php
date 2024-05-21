@@ -67,28 +67,3 @@ function allSettingsForms(): array
     $forms = SettingsForm::getInstance();
     return $forms->all();
 }
-
-customizeSelectors('plutomania', [
-    'div' => [
-        'color',
-        'padding',
-        'border-color',
-    ],
-    'p',
-    'span' => 'background-color'
-]);
-
-customizeSelectors('greenfield', [
-    'section' => [
-        'color',
-        'padding',
-        'border-color',
-    ],
-    'main',
-    '#acct' => 'background-color',
-    '.btn' => 'color'
-]);
-
-// addCustomizedStyleName('plutomania');
-// removeCustomizedStyleName('plutomania');
-

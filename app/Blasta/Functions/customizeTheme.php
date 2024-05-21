@@ -140,8 +140,8 @@ function isSelectorCustomized(string $input)
         return false;
     }
 
-    $styleFile = base_path("app/Blasta/Styles/$name");
-    $style = file_get_contents(base_path("app/Blasta/CustomizedStyles/$name"));
+    $styleFile = base_path("app/CustomizedStyles/$name");
+    $style = file_get_contents(base_path("app/CustomizedStyles/$name"));
 
     if (strpos($style, $selector)) {
         return true;
@@ -168,7 +168,7 @@ function isPropertyCustomized(string $input)
         return false;
     }
 
-    $styleFile = base_path("app/Blasta/CustomizedStyles/$name");
+    $styleFile = base_path("app/CustomizedStyles/$name");
     $style = file_get_contents($styleFile);
 
     if (strpos($style, $selector)) {
@@ -217,7 +217,7 @@ function getCustomizedPropertyValue(string $input)
 {
     $value = null;
     $input = explode("'", $input);
-    $styleFile = base_path('app/Blasta/CustomizedStyles/'.$input[0]);
+    $styleFile = base_path('app/CustomizedStyles/'.$input[0]);
     $selector = $input[1];
     $property = $input[2];
 

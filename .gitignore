@@ -7,7 +7,7 @@ public/uploads
 public/my_exports
 /database/database.sqlite
 app/Plugins/*/ACTIVE
-app/Blasta/CustomizedStyles/*
+app/CustomizedStyles/*
 /storage/*.key
 /vendor
 .env.backup

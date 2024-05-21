@@ -32,10 +32,10 @@ class CustomizeThemeController extends Controller
     {
         $name = $request->name;
         $data = $request->data;
-        $file = base_path("app/Blasta/CustomizedStyles/$name");
+        $file = base_path("app/CustomizedStyles/$name");
 
-        if (!file_exists(base_path("app/Blasta/CustomizedStyles"))) {
-            mkdir(base_path("app/Blasta/CustomizedStyles"));
+        if (!file_exists(base_path("app/CustomizedStyles"))) {
+            mkdir(base_path("app/CustomizedStyles"));
         }
 
         $fp = fopen($file, 'w');

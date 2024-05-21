@@ -53,7 +53,7 @@ function customizedStyles()
     }
 
     foreach ($styleNames as $styleName) {
-        $style .= file_get_contents(base_path("app/Blasta/CustomizedStyles/$styleName"));
+        $style .= file_get_contents(base_path("app/CustomizedStyles/$styleName"));
     }
 
     $style .= "\n</style>";
@@ -64,7 +64,7 @@ function customizedStyles()
 /**
  * Adds customized style to the document
  */
-function addCustomizedStyle()
+function addCustomizedStyles()
 {
     return customizedStyles();
 }

@@ -11,6 +11,7 @@ function compileFuncs()
         'publishEventExport.php',
         'home.php',
         'index.php',
+        'settings.php',
     ];
 
     $fp = fopen(base_path('app/Blasta/Functions/index.php'), 'w');
@@ -33,4 +34,9 @@ function compileFuncs()
         fwrite($fp, $content);
         fclose($fp);
     }
+
+    $content = file_get_contents(base_path('app/Blasta/Functions/index.php'));
+    $fp = fopen(base_path('app/Blasta/Functions/index.php'), 'w');
+    fwrite($fp, str_replace(' <?php', '', $content));
+    fclose($fp);
 }
