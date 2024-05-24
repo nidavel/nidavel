@@ -1,9 +1,11 @@
 {
-    "name": "nidavel/sitemap",
-    "description": "Sitemap generator for Nidavel",
+    "name": "nidavel/rss",
+    "description": "This plugin creates RSS feed for your Nidavel blog",
+    "type": "nidavel-plugin",
+    "license": "GPL-v2",
     "autoload": {
         "psr-4": {
-            "Nidavel\\Sitemap\\": "src/"
+            "Nidavel\\Feed\\": "src/"
         }
     },
     "authors": [

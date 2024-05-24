@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Post;
+
 /*
 | This is a group of functions that should be used by third party devs
 | to trigger a function on any of the publish events
@@ -24,7 +26,7 @@ function runOnPostPublish(string|array|callable $function = null)
     return $functions;
 }
 
-function runFunctionsPostPublished()
+function runFunctionsPostPublished(Post $post)
 {
     $functions = runOnPostPublish();
     
@@ -32,7 +34,15 @@ function runFunctionsPostPublished()
         foreach ($functions as $function) {
             if (is_string($function)) {
                 if (function_exists($function)) {
-                    $function();
+                    $fct = new ReflectionFunction($function);
+                    $params = $fct->getNumberOfRequiredParameters();
+                    
+                    if ($params === 1) {
+                        $function($post);
+                    }
+                    else if ($params === 0) {
+                        $function();
+                    }
                 } else {
                     throw new Exception("Function $function does not exist", 1);
                 }

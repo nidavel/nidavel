@@ -12,6 +12,7 @@ function blastaGlobalFunctions()
         }
     } else {
         require_once base_path('app/Blasta/Functions/index.php');
+        require_once base_path('app/Blasta/Functions/settings.php');
         require_once base_path('app/Blasta/Functions/home.php');
         require_once base_path('app/Blasta/Functions/publishEventExport.php');
     }

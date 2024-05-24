@@ -21,7 +21,7 @@ class Sitemap
     {
         if (static::$instance == null) {
             static::$instance = new Sitemap;
-            static::$protocol = settings('r', 'general.protocol') ?? '';
+            static::$protocol = settings('r', 'general.protocol') ?? 'http';
             static::$domain = settings('r', 'general.domain') ?? '';
             static::$sitemapType = settings('r', 'sitemap.sitemap_type') ?? 'xml';
             switch (static::$sitemapType) {
