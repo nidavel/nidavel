@@ -49,13 +49,13 @@ XML;
                 : 'Website made with Nidavel');
             $channel->addChild(
                 'language',
-                !empty(settings('r', 'general.language'))
-                ? settings('r', 'general.language')
+                !empty(settings('r', 'general.locale'))
+                ? settings('r', 'general.locale')
                 : 'en-US'
             );
             $channel->addChild('lastBuildDate', \date(DATE_RSS, time()));
 
-            $image = $channel->addChild('image', settings('r', 'general.site_logo'));
+            $image = $channel->addChild('image');
             $image->addChild('title', settings('r', 'general.name'));
             $image->addChild('link', "$protocol://$domain");
             $image->addChild(
@@ -101,7 +101,7 @@ XML;
                 $description->addCData($post->description);
                 $item->addChild('author', User::find($post->user_id)->email);
                 $item->addChild('category', $category);
-                $item->addChild('comments', 'https://comments.nidavel.com/'.settings('r', 'site.property_id')."/$post->id");
+                $item->addChild('comments', 'https://comments.nidavel.com/'.settings('r', 'general.property_id')."/$post->id");
                 $guid = $item->addChild('guid', "$fullUrl/");
             }
 

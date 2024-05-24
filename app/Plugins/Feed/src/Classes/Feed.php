@@ -49,8 +49,8 @@ XML;
                 : 'Website made with Nidavel');
             $channel->addChild(
                 'language',
-                !empty(settings('r', 'general.language'))
-                ? settings('r', 'general.language')
+                !empty(settings('r', 'general.locale'))
+                ? settings('r', 'general.locale')
                 : 'en-US'
             );
             $channel->addChild('lastBuildDate', \date(DATE_RSS, time()));
@@ -58,7 +58,7 @@ XML;
             $channel->addChild('\:sy:updateFrequency', '1');
             $channel->addChild('generator', 'https://nidavel.com');
 
-            $image = $channel->addChild('image', settings('r', 'general.site_logo'));
+            $image = $channel->addChild('image');
             $image->addChild('title', settings('r', 'general.name'));
             $image->addChild('link', "$protocol://$domain");
             $image->addChild(
@@ -106,7 +106,7 @@ XML;
                 $description->addCData($post->description);
                 $cat = $item->addChild('category');
                 $cat->addCData($category);
-                $item->addChild('comments', 'https://comments.nidavel.com/'.settings('r', 'site.property_id')."/$post->id");
+                $item->addChild('comments', 'https://comments.nidavel.com/'.settings('r', 'general.property_id')."/$post->id");
                 $item->addChild('\:slash:comments', '0');
                 $guid = $item->addChild('guid', "$fullUrl/");
             }

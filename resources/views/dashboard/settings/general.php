@@ -10,6 +10,16 @@ $export_homepage_on_post_publish =
         : '';
 
 $protocol = settings('r', 'general.protocol');
+
+$timezones = getTimezones();
+$appTimezone = !empty(settings('r', 'general.timezone'))
+    ? settings('r', 'general.timezone')
+    : 'UTC';
+
+$locales = getLocales();
+$appLocale = !empty(settings('r', 'general.locale'))
+    ? settings('r', 'general.locale')
+    : 'en_US';
 ?>
 
 <div class="w-64">
@@ -59,6 +69,50 @@ $protocol = settings('r', 'general.protocol');
     <label class="flex flex-col gap-2">
         <div>Domain (Fill this value only when you have a registered domain)</div>
         <input class="border border-gray-400 rounded-lg w-full" type="text" name="domain" id="" placeholder="example.com" value="<?= settings('r', 'general.domain') ?>">
+    </label>
+</div>
+
+<div class="w-64">
+    <label class="flex flex-col gap-2">
+        <div>Property ID (Fill this value only when you have a Nidavel property ID)</div>
+        <input class="border border-gray-400 rounded-lg w-full" type="text" name="property_id" id="" value="<?= settings('r', 'general.property_id') ?>">
+    </label>
+</div>
+
+<div class="w-64">
+    <label class="flex flex-col gap-2">
+        <div>Logo URL</div>
+        <input class="border border-gray-400 rounded-lg w-full" type="text" name="logo_url" id="" value="<?= settings('r', 'general.logo_url') ?>">
+    </label>
+</div>
+
+<div class="w-64">
+    <label class="flex flex-col gap-2">
+        <div>Language / Locale</div>
+        <select class="border border-gray-400 rounded-lg w-full" name="language" id="">
+        <?php
+            foreach ($locales as $locale => $localeName) {
+                ?>
+                <option <?= $appLocale === $locale ? 'selected' : '' ?> value="<?=$locale?>"><?=$localeName?></option>
+            <?php
+            }
+            ?>
+        </select>
+    </label>
+</div>
+
+<div class="w-64">
+    <label class="flex flex-col gap-2">
+        <div>Timezone</div>
+        <select class="border border-gray-400 rounded-lg w-full" name="timezone" id="">
+            <?php
+            foreach ($timezones as $timezone) {
+                ?>
+                <option <?= $appTimezone === $timezone ? 'selected' : '' ?> value="<?=$timezone?>"><?=$timezone?></option>
+            <?php
+            }
+            ?>
+        </select>
     </label>
 </div>
 

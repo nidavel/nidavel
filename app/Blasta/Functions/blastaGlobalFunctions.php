@@ -21,3 +21,4 @@ function blastaGlobalFunctions()
 blastaGlobalFunctions();
 loadActivePlugins();
 loadActiveThemeIndex();
+setTimezone(settings('r', 'general.timezone'));

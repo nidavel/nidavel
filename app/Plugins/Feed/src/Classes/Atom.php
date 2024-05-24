@@ -26,8 +26,8 @@ class Atom
         $posts = Post::where('status', 'published')
             ->orderBy('id', 'DESC')
             ->get();
-        $language = !empty(settings('r', 'general.language'))
-            ? settings('r', 'general.language')
+        $language = !empty(settings('r', 'general.locale'))
+            ? settings('r', 'general.locale')
             : 'en-US';
         
         try {

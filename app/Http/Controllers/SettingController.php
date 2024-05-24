@@ -20,6 +20,9 @@ class SettingController extends Controller
             if ($setting === 'key') {
                 continue;
             }
+            if ($value == null) {
+                continue;
+            }
             settings('w', "$key.$setting", $value);
         }
 
