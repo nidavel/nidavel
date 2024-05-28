@@ -106,7 +106,7 @@ use App\Http\Controllers\DashboardController;
                         @endif
                         
                         {{-- Footer --}}
-                        <div class="my-8 italic text-gray-400">
+                        <div class="my-8 italic text-gray-400 text-sm">
                             Nidavel dashboard made with <a target="_blank" class="" href="https://laravel.com">Laravel breeze</a>.
                         </div>
                         <div></div>

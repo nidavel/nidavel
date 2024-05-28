@@ -164,6 +164,7 @@ class PostController extends Controller
         }
 
         $post->author = User::find($post->user_id)->name;
+        $post->content = shortcode($post->content);
 
         return view('front.post', [
             'post' => $post

@@ -1,4 +1,6 @@
-
+<?php
+require_once public_path('js/tinymce-shortcodes.php');
+?>
 <script src="{{ asset('js/tinymce_6.6.0/tinymce.min.js') }}"></script>
 <script src="{{ asset('js/tinymce-config.js') }}"></script>
 

@@ -1,4 +1,6 @@
-
+<?php
+require_once public_path('js/tinymce-shortcodes.php');
+?>
 <script src="{{ asset('js/tinymce_6.6.0/tinymce.min.js') }}"></script>
 <script src="{{ asset('js/tinymce-config.js') }}"></script>
 
@@ -57,6 +59,23 @@
                                         <li class="post-edit-update-options-btns"><label for="updatePublish_id">Update and publish</label></li>
                                     </ul>
                                 </div>
+                                <script>
+                                let updateOptions = document.querySelector("#update_options");
+                                let updateOptionsToggle = document.querySelector("#update_options_toggle");
+
+                                updateOptionsToggle.onclick = () => {
+                                    updateOptions.classList.toggle("hidden");
+                                    if (updateOptions.classList.contains("hidden") == false) {
+                                        updateOptions.focus();
+                                    }
+                                }
+
+                                // updateOptions.onblur = () => {
+                                //     if (updateOptions.classList.contains("hidden") == false) {
+                                //         updateOptions.classList.add("hidden");
+                                //     }
+                                // }
+                                </script>
                             </div>
                         </div>
                     </div>

@@ -16,7 +16,6 @@ class Settings
             static::$instance = new Settings;
 
             static::$json = base_path("/app/Blasta/settings.json");
-            // static::$json = '../settings.json';
             static::$instance->refresh();
         }
 
