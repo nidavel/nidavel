@@ -35,6 +35,30 @@ $i = 0;
                         <span class="text-blue-500"><a href="/dashboard?route=exports/all/author-posts">Author's posts</a></span> --}}
 
                         <span class="sub-list-btn text-sm">
+                            <form method="get" action="/exports/posts">
+                                <label>
+                                    <input type="submit" value="Export posts" class="border border-blue-500 text-blue-500 rounded-lg p-2 cursor-pointer" />
+                                </label>
+                            </form>
+                        </span>
+
+                        <span class="sub-list-btn text-sm">
+                            <form method="get" action="/exports/pages">
+                                <label>
+                                    <input type="submit" value="Export pages" class="border border-blue-500 text-blue-500 rounded-lg p-2 cursor-pointer" />
+                                </label>
+                            </form>
+                        </span>
+
+                        <span class="sub-list-btn text-sm">
+                            <form method="get" action="/exports/homepage">
+                                <label>
+                                    <input type="submit" value="Export homepage" class="border border-blue-500 text-blue-500 rounded-lg p-2 cursor-pointer" />
+                                </label>
+                            </form>
+                        </span>
+
+                        <span class="sub-list-btn text-sm">
                             <form method="POST" action="/exports/clear-orphaned">
                                 <label>
                                     <input type="submit" value="Clear orphaned exports" class="border border-red-500 text-red-500 rounded-lg p-2 cursor-pointer" />

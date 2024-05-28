@@ -1,5 +1,31 @@
 <?php
 
+echo '
+
+                                        *
+                                      *****
+                                    *********
+                                  ****** ******
+                           *    *******   *******    *
+                         * * *    ****     ****    * * *
+                           * * *    *       *    * * * 
+                             * * *             * * *
+                           * * *    *       *    * * *
+                         * * *    ****     ****    * * *
+                           *    *******   *******    *
+                                  ****** ******
+                                    *********
+                                      *****
+                                        *
+
+';
+
+$details = file_get_contents('app/Blasta/details.json');
+$details = json_decode($details);
+$version = $details->version;
+echo '                              Nidavel';
+echo " version $version\n\n";
+
 $srv1 = 'php -S localhost:8000 -t public';
 $srv2 = 'php -S localhost:8001 -t public';
 
