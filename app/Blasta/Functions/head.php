@@ -11,6 +11,7 @@ function postHead($post = null)
     $domain = settings('r', 'general.domain');
 
     $postHeadString = '';
+    $postHeadMeta = Head::get();
 
     if ($post !== null) {
         $postHeads[] = '<meta name="author" content="'.$post->author.'" />';
@@ -31,6 +32,8 @@ function postHead($post = null)
             $postHeadString .= "$postHead\n";
         }
     }
+
+    $postHeadString .= $postHeadMeta;
     
     return $postHeadString;
 }
@@ -55,15 +58,15 @@ function customizedStyles()
 
     $style .= "\n</style>";
 
-    appendToHead($style);
+    return $style;
 }
 
 /**
- * This function returns all the programmatically added nodes in the head section
+ * Adds customized style to the document
  */
-function getHead()
+function addCustomizedStyles()
 {
-    return Head::get();
+    return customizedStyles();
 }
 
 /**
