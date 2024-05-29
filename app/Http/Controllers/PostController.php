@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
@@ -131,9 +132,18 @@ class PostController extends Controller
     public function saveDraft(StorePostRequest $request)
     {
         $featured_image = null;
+        $category_id    = null;
 
         if (!empty($request->featured_image)) {
             $featured_image = ImageController::upload($request, 'featured_image');
+        }
+        if (!empty($request->category)) {
+            $category_id = Category::where('name', $request->category)->first();
+            if (!is_null($category_id)) {
+                $category_id = $category_id->id;
+            } else {
+                $category_id = Category::create(['name' => $request->category]);
+            }
         }
         
         return Post::create([
@@ -145,6 +155,7 @@ class PostController extends Controller
             'post_type'         => $request->post_type,
             'description'       => $request->description,
             'keywords'          => $request->keywords,
+            'category_id'       => $category_id,
         ]);
     }
 
@@ -187,9 +198,18 @@ class PostController extends Controller
     public function update(UpdatePostRequest $request, Post $post)
     {
         $featured_image = $post->featured_image;
+        $category_id    = null;
 
         if (!empty($request->featured_image)) {
             $featured_image = ImageController::upload($request, 'featured_image');
+        }
+        if (!empty($request->category)) {
+            $category_id = Category::where('name', $request->category)->first();
+            if (!is_null($category_id)) {
+                $category_id = $category_id->id;
+            } else {
+                $category_id = Category::create(['name' => $request->category]);
+            }
         }
         
         $post->update([
@@ -200,6 +220,7 @@ class PostController extends Controller
             'post_type'         => $request->post_type,
             'description'       => $request->description,
             'keywords'          => $request->keywords,
+            'category_id'       => $category_id,
         ]);
 
         if (!empty($request->updatePublish)) {

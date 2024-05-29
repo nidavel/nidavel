@@ -76,13 +76,13 @@ XML;
                 $item->addChild('title', $post->title);
                 $item->addChild('pubDate', \date(DATE_RSS, strtotime($post->created_at)));
 
-                if (is_null($post->category) && ($post->post_type === 'post')) {
+                if (is_null($post->category_id) && ($post->post_type === 'post')) {
                     $category = 'post';
                     $categoryParameter = 'posts';
                 }
-                else if (!is_null($post->category)) {
-                    $category = Category::find($post->category)->name;
-                    $categoryParameter = $post->category;
+                else if (!is_null($post->category_id)) {
+                    $category = Category::find($post->category_id)->name;
+                    $categoryParameter = $category;
                 }
                 else {
                     $category = $post->post_type;
@@ -91,11 +91,12 @@ XML;
                         : 'pages';
                 }
 
-                if (!is_null($post->subcategory)) {
-                    $subcategory = "$post->subcategory/";
-                }
+                // if (!is_null($post->subcategory)) {
+                //     $subcategory = "$post->subcategory/";
+                // }
 
-                $fullUrl = "$protocol://$domain/$categoryParameter/$subCategory"."$post->link.html";
+                // $fullUrl = "$protocol://$domain/$categoryParameter/$subCategory"."$post->link.html";
+                $fullUrl = "$protocol://$domain/$categoryParameter/$post->link.html";
                 $item->addChild('link', $fullUrl);
                 $description = $item->addChild('description');
                 $description->addCData($post->description);
