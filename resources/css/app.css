@@ -64,7 +64,11 @@ link {
 }
 
 .post-form-container {
-    @apply w-full lg:w-1/4 text-sm;
+    @apply w-full lg:w-1/4 lg:mr-8 text-sm;
+}
+
+.post-forms {
+    @apply lg:fixed lg:overflow-y-auto w-full h-full lg:w-1/4 lg:h-[34vw] lg:bg-black/5 lg:p-4 lg:rounded-xl;
 }
 
 .post-publish-btn {

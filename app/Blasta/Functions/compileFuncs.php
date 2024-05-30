@@ -7,10 +7,11 @@ function compileFuncs()
 {
     $ignore = [
         'blastaGlobalFunctions.php',
+        'index.php',
         'compileFuncs.php',
         'publishEventExport.php',
         'home.php',
-        'index.php',
+        'categories.php',
         'settings.php',
     ];
 

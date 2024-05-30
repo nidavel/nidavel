@@ -1,5 +1,6 @@
 @php
 use App\Models\User;
+use App\Models\Category;
 use Carbon\Carbon;
 @endphp
 
@@ -48,7 +49,7 @@ use Carbon\Carbon;
                                 <tr>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">Title</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">Author</th>
-                                    {{-- <th scope="col" class="px-6 py-4 font-medium text-gray-900">Keywords</th> --}}
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">Category</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">Status</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">Date created</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">Last modified</th>
@@ -61,11 +62,12 @@ use Carbon\Carbon;
                             @foreach ($posts as $post)
                                 <?php
                                 $author = User::find($post->user_id)->name ?? 'Deleted user';
+                                $category = Category::find($post->category_id)->name ?? 'NULL';
                                 ?>
                                 <tr class="odd:bg-white even:bg-gray-100">
                                     <td class="px-6 py-4"><a class="text-blue-500" href="/posts/{{$post->id}}">{{ $post->title }}</a></td>
                                     <td class="px-6 py-4"><a class="text-blue-500" href="/users/{{$post->id}}">{{ $author }}</td>
-                                    {{-- <td class="px-6 py-4">{{ $post->keywords }}</a></td> --}}
+                                    <td class="px-6 py-4">{{ $category }}</a></td>
                                     <td class="px-6 py-4">{{ ucFirst($post->status) }}</td>
                                     <td class="px-6 py-4">{{ $post->created_at->diffForHumans() }}</td>
                                     <td class="px-6 py-4">{{ $post->updated_at->diffForHumans() }}</td>

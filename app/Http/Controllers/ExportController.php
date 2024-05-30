@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Export;
 use App\Models\Post;
+use App\Models\Category;
 use App\Http\Requests\StoreExportRequest;
 use App\Http\Requests\UpdateExportRequest;
 // use Session;
@@ -110,7 +111,7 @@ class ExportController extends Controller
     public function exportHomepage()
     {
         if (!file_exists(public_path() . '/my_exports')) {
-            mkdir(public_path() . '/my_exports');
+            mkUriDir(public_path() . '/my_exports');
         }
 
         $fp = fopen("my_exports/index.html", 'w');
@@ -160,6 +161,10 @@ class ExportController extends Controller
                 $subdirectory = 'posts';
         }
 
+        if (!is_null($post->category_id)) {
+            $subdirectory = Category::find($post->category_id)->name;
+        }
+
         if ($post->status !== "published") {
             session()->flash("error", "Post must be published");
             return redirect()->back();
@@ -171,11 +176,11 @@ class ExportController extends Controller
         }
 
         if (!file_exists(public_path() . '/my_exports')) {
-            mkdir(public_path() . '/my_exports');
+            mkUriDir(public_path() . '/my_exports');
         }
 
         if (!file_exists(public_path() . '/my_exports/'.$subdirectory)) {
-            mkdir(public_path() . '/my_exports/'.$subdirectory);
+            mkUriDir(public_path() . '/my_exports/'.$subdirectory);
         }
 
         $link = $post->link == null
@@ -219,11 +224,13 @@ class ExportController extends Controller
     public function exportPosts()
     {
         $posts = Post::where('status', 'published')
+            ->where('post_type', 'post')
             ->orderBy('id', 'ASC')
             ->get();
 
         foreach ($posts as $post) {
             $id = $post->id;
+            $subdirectory = 'posts';
 
             if ($post->deleted_at !== null) {
                 session()->flash('error', 'Deleted post can not be exported');
@@ -231,18 +238,25 @@ class ExportController extends Controller
             }
 
             if (!file_exists(public_path('/my_exports'))) {
-                mkdir(public_path('/my_exports'));
+                mkUriDir(public_path('/my_exports'));
             }
 
             if (!file_exists(public_path('/my_exports/posts'))) {
-                mkdir(public_path('/my_exports/posts'));
+                mkUriDir(public_path('/my_exports/posts'));
+            }
+
+            if ($post->category_id != null) {
+                $subdirectory = Category::find($post->category_id)->name;
+                if (!file_exists(public_path("/my_exports/$subdirectory"))) {
+                    mkUriDir(public_path("/my_exports/$subdirectory"));
+                }
             }
 
             $link = $post->link == null
                 ? titleToLink($post->title)
                 : $post->link;
 
-            $fp = fopen("my_exports/posts/$link" . '.html', 'w');
+            $fp = fopen("my_exports/$subdirectory/$link" . '.html', 'w');
 
             $port = config('app.env') == 'production'
                 ? ''
@@ -277,6 +291,7 @@ class ExportController extends Controller
 
         foreach ($posts as $post) {
             $id = $post->id;
+            $subdirectory = 'pages';
 
             if ($post->deleted_at !== null) {
                 session()->flash('error', 'Deleted post can not be exported');
@@ -284,18 +299,25 @@ class ExportController extends Controller
             }
 
             if (!file_exists(public_path('/my_exports'))) {
-                mkdir(public_path('/my_exports'));
+                mkUriDir(public_path('/my_exports'));
             }
 
             if (!file_exists(public_path('/my_exports/pages'))) {
-                mkdir(public_path('/my_exports/pages'));
+                mkUriDir(public_path('/my_exports/pages'));
+            }
+
+            if ($post->category_id != null) {
+                $subdirectory = Category::find($post->category_id)->name;
+                if (!file_exists(public_path("/my_exports/$subdirectory"))) {
+                    mkUriDir(public_path("/my_exports/$subdirectory"));
+                }
             }
 
             $link = $post->link == null
                 ? titleToLink($post->title)
                 : $post->link;
 
-            $fp = fopen("my_exports/pages/$link" . '.html', 'w');
+            $fp = fopen("my_exports/$subdirectory/$link" . '.html', 'w');
 
             $port = config('app.env') == 'production'
                 ? ''
@@ -328,11 +350,11 @@ class ExportController extends Controller
         $filePages = getFiles(front_path('/pages'));
 
         if (!file_exists(public_path('/my_exports'))) {
-            mkdir(public_path('/my_exports'));
+            mkUriDir(public_path('/my_exports'));
         }
 
         if (!file_exists(public_path('/my_exports/pages'))) {
-            mkdir(public_path('/my_exports/pages'));
+            mkUriDir(public_path('/my_exports/pages'));
         }
 
         foreach ($filePages as $page) {
@@ -367,6 +389,8 @@ class ExportController extends Controller
      */
     public function deletePost(Post $post, $postType = 'post')
     {
+        $subdirectory = 'posts';
+
         switch ($postType) {
             case 'post':
                 $subdirectory = 'posts';
@@ -376,6 +400,10 @@ class ExportController extends Controller
                 break;
             default:
                 $subdirectory = 'posts';
+        }
+
+        if ($post->category_id != null) {
+            $subdirectory = Category::find($post->category_id)->name;
         }
 
         $path = base_path("/public/my_exports/$subdirectory/$post->link.html");
@@ -412,33 +440,37 @@ class ExportController extends Controller
      */
     public function clearOrphaned(Request $request)
     {
-        $posts = Post::where('post_type', 'post')
-            ->get('link');
-        $postLinks = [];
+        $posts          = Post::all();
+        $postLinks      = [];
+        $pageLinks      = [];
+        $categories     = [];
+        $exportedPosts  = getFiles(public_path("/my_exports/posts"));
+        $exportedPages  = getFiles(public_path("/my_exports/pages"));
+
         foreach ($posts as $post) {
-            $postLinks[] = titleToLink($post->link);
-        }
-        $exportedPosts = getFiles(public_path("/my_exports/posts"));
-
-        $pages = Post::where('post_type', 'page')
-            ->get('link');
-        $pageLinks = [];
-        foreach ($pages as $page) {
-            $pageLinks[] = titleToLink($page->link);
-        }
-        $exportedPages = getFiles(public_path("/my_exports/pages"));
-
-        foreach ($exportedPosts as $exportedPost) {
-            if (!in_array(substr($exportedPost, 0, strpos($exportedPost, '.html')), $postLinks)) {
-                unlink(public_path("/my_exports/posts/$exportedPost"));
+            if ($post->deleted_at != null) {
+                continue;
+            }
+            if ($post->category_id != null) {
+                $category = Category::find($post->category_id)->name;
+                $categories[$category] = titleToLink($post->link);
+                continue;
+            }
+            if ($post->post_type == 'post') {
+                $postLinks[] = titleToLink($post->link);
+                continue;
+            }
+            if ($post->post_type == 'page') {
+                $pageLinks[] = titleToLink($post->link);
+                continue;
             }
         }
 
-        foreach ($exportedPages as $exportedPage) {
-            if (!in_array(rtrim($exportedPage, '.html'), $pageLinks)) {
-                unlink(public_path("/my_exports/pages/$exportedPage"));
-            }
-        }
+        $this->clearOrphanedPosts($exportedPosts, $postLinks);
+
+        $this->clearOrphanedPages($exportedPages, $pageLinks);
+
+        $this->clearOrphanedCategories($categories);
 
         return redirect()->back();
     }
@@ -449,5 +481,47 @@ class ExportController extends Controller
     public function exportAssets()
     {
         exportAssets();
+    }
+
+    private function clearOrphanedPosts($postExports, $dbPostLinks)
+    {
+        foreach ($postExports as $exportedPost) {
+            if ($exportedPost === 'index.html') {
+                continue;
+            }
+            if (!in_array(substr($exportedPost, 0, strpos($exportedPost, '.html')), $dbPostLinks)) {
+                unlink(public_path("/my_exports/posts/$exportedPost"));
+            }
+        }
+    }
+
+    private function clearOrphanedPages($pageExports, $dbPageLinks)
+    {
+        foreach ($pageExports as $exportedPage) {
+            if ($exportedPage === 'index.html') {
+                continue;
+            }
+            if (!in_array(rtrim($exportedPage, '.html'), $dbPageLinks)) {
+                unlink(public_path("/my_exports/pages/$exportedPage"));
+            }
+        }
+    }
+
+    private function clearOrphanedCategories($categoryExports)
+    {
+        foreach ($categoryExports as $name => $links) {
+            $exportedLinks = getFiles(public_path("/my_exports/$name"));
+            foreach ($exportedLinks as $exportedLink) {
+                if ($exportedLink == 'index.html') {
+                    continue;
+                }
+                if (is_string($links)) {
+                    $links = [$links];
+                }
+                if (!in_array(rtrim($exportedLink, '.html'), $links)) {
+                    unlink(public_path("/my_exports/$name/$exportedLink"));
+                }
+            }
+        }
     }
 }

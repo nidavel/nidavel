@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 
+=======
+<?php
+use App\Models\Category;
+$categories = Category::all();
+require_once public_path('js/tinymce-shortcodes.php');
+?>
+>>>>>>> dev
 <script src="{{ asset('js/tinymce_6.6.0/tinymce.min.js') }}"></script>
 <script src="{{ asset('js/tinymce-config.js') }}"></script>
 
@@ -35,7 +43,7 @@
         </div>
 
         <div class="post-form-container">
-            <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-8 post-forms">
                 {{-- Post --}}
                 <div class="flex flex-col gap-4 bg-white p-4 rounded-lg shadow">
                     <div class="flex justify-between items-center">
@@ -182,6 +190,25 @@
                             <option {{ $post->post_type == 'page' ? 'selected' : ''}} value="page">Page</option>
                         </select>
                     </div>
+                </div>
+
+                {{-- Post Category --}}
+                <div class="flex flex-col gap-4 bg-white p-4 rounded-lg shadow">
+                    <div class="flex justify-between items-center">
+                        <p class="font-bold">Category</p>
+                    </div>
+
+                    <hr class="" />
+                    
+                    <div>
+                        <input list="categories" name="category" id="category" placeholder="NULL" value="{{Category::find($post->category_id)->name ?? ''}}" class="w-full rounded-lg border-gray-300 shadow">
+                        <datalist id="categories">
+                            @foreach ($categories as $category)
+                                <option value="{{$category->name}}"></option>
+                            @endforeach
+                        </datalist>
+                    </div>
+
                 </div>
             </div>
         </div>
