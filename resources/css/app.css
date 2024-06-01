@@ -59,6 +59,26 @@ link {
     @apply mt-12 w-11/12 mr-8;
 }
 
+.dashboard-notice {
+    @apply flex flex-col w-full items-start gap-2 border rounded p-4 mb-4;
+}
+
+.notice-danger {
+    @apply border-red-500 bg-red-500/10 text-red-500;
+}
+
+.notice-warning {
+    @apply border-yellow-500 bg-yellow-500/10 text-yellow-500;
+}
+
+.notice-info {
+    @apply border-blue-500 bg-blue-500/10 text-blue-500;
+}
+
+.notice-success {
+    @apply border-green-500 bg-green-500/10 text-green-500;
+}
+
 .post-body {
     @apply flex flex-col gap-8 w-full lg:w-8/12;
 }

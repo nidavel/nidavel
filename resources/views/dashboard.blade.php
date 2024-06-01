@@ -1,5 +1,10 @@
 @php
 use App\Http\Controllers\DashboardController;
+session_start();
+$notices = null;
+if (!empty($_SESSION['dashboard-notices'])) {
+    $notices = $_SESSION['dashboard-notices'];
+}
 @endphp
 
 <x-app-layout>
@@ -101,6 +106,28 @@ use App\Http\Controllers\DashboardController;
 
                     {{-- Dashboard contents --}}
                     <div class="dashboard-contents">
+                        @if (!empty($notices))
+                            @foreach ($notices as $id => $details)
+                                @php
+                                    $noticeType = isset($details['type'])
+                                        ? 'notice-'.$details['type']
+                                        : 'notice-info';
+                                @endphp
+                                <div id="{{$id}}" class="dashboard-notice {{$noticeType ?? ''}}">
+                                    <div class="flex w-full items-center justify-between">
+                                        <div class="font-bold">{{$details['name']}}</div>
+                                        @if (!isset($details['persistent']))
+                                            <div class="cursor-pointer" onclick="removeNotice('{{$id}}')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                                </svg>
+                                            </div>
+                                        @endif                                        
+                                    </div>
+                                    <div>{{$details['message']}}</div>
+                                </div>
+                            @endforeach
+                        @endif
                         @if (isset($_GET['route']))
                             {!! DashboardController::RenderContent($_GET['route']) !!}
                         @endif
@@ -115,4 +142,23 @@ use App\Http\Controllers\DashboardController;
             </div>
         </div>
     </div>
+    <div class="fixed right-4 bottom-32">jkhgjksnzfj</div>
+<script>
+    function removeNotice(id)
+    {
+        let notice = document.querySelector(`#${id}`);
+        let container = notice.parentElement;
+
+        fetch(`/notices/remove/${id}`)
+        .then((res) => {
+            if (res.ok) {
+                return res;
+            }
+        })
+        .then((data) => {
+            console.log(data);
+            container.removeChild(notice);
+        });
+    }
+</script>
 </x-app-layout>
