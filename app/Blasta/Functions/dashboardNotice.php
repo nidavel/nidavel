@@ -3,7 +3,7 @@
 /**
  * Adds a notice to the session
  */
-function addNotice(string $id, array $details)
+function addDashboardNotice(string $id, array $details)
 {
     if (session_status() == PHP_SESSION_NONE) {
         session_start();
@@ -14,11 +14,22 @@ function addNotice(string $id, array $details)
 /**
  * Removes a notice from session
  */
-function removeNotice(string $name)
+function removeDashboardNotice(string $id)
 {
     if (session_status() == PHP_SESSION_NONE) {
         session_start();
     }
-    $name = toSnakeCase('_', $name);
-    unset($_SESSION['dashboard-notices'][$name]);
+    $id = toSnakeCase('_', $id);
+    unset($_SESSION['dashboard-notices'][$id]);
+}
+
+/**
+ * Emits an alert to the cookie
+ */
+function emitDashboardAlert(string $title, string $message, string $type)
+{
+    $alert = '';
+    $values = "$title|$message|$type";
+    setcookie('dashboard-alerts', $values, timestamp() + 86500);
+    $_COOKIE['dashboard-alerts'] = $values;
 }

@@ -1,5 +1,6 @@
 @php
 use App\Http\Controllers\DashboardController;
+// emitDashboardAlert('Congratulations', 'Your application installed successfully', 'success');
 session_start();
 $notices = null;
 if (!empty($_SESSION['dashboard-notices'])) {
@@ -115,7 +116,7 @@ if (!empty($_SESSION['dashboard-notices'])) {
                                 @endphp
                                 <div id="{{$id}}" class="dashboard-notice {{$noticeType ?? ''}}">
                                     <div class="flex w-full items-center justify-between">
-                                        <div class="font-bold">{{$details['name']}}</div>
+                                        <div class="font-bold">{{$details['title']}}</div>
                                         @if (!isset($details['persistent']))
                                             <div class="cursor-pointer" onclick="removeNotice('{{$id}}')">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
@@ -142,23 +143,11 @@ if (!empty($_SESSION['dashboard-notices'])) {
             </div>
         </div>
     </div>
-    <div class="fixed right-4 bottom-32">jkhgjksnzfj</div>
-<script>
-    function removeNotice(id)
-    {
-        let notice = document.querySelector(`#${id}`);
-        let container = notice.parentElement;
-
-        fetch(`/notices/remove/${id}`)
-        .then((res) => {
-            if (res.ok) {
-                return res;
-            }
-        })
-        .then((data) => {
-            console.log(data);
-            container.removeChild(notice);
-        });
-    }
-</script>
+    <div class="dashboard-alert hidden" id="dashboard_alert_id">
+        {{-- <div class="dashboard-alert-nav">
+            <span class="dashboard-alert-nav-control"><</span>
+            <span>1/1</span>
+            <span class="dashboard-alert-nav-control">></span>
+        </div> --}}
+    </div>
 </x-app-layout>
