@@ -16,10 +16,3 @@ Route::get('/get-dashboard-alerts', function () {
 
     return null;
 });
-
-// Route::get('/clear-alerts', function () {
-//     unset($_SESSION['dashboard-alerts']);
-//     return response()->json([
-//         'msg' => 'success'
-//     ]);
-// });
