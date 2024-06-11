@@ -92,10 +92,10 @@ function activateTheme(string $themeName)
             continue;
         }
         if ($fileinfo->isDir()) {
-            deleteDir($themeDir.'/'.$fileinfo->getFileName(), true);
+            deleteDir($fileinfo->getPathname(), true);
         }
         if ($fileinfo->isFile()) {
-            unlink($themeDir.'/'.$fileinfo->getFileName());
+            unlink($fileinfo->getPathname());
         }
     }
 
