@@ -1,5 +1,6 @@
 @php
 use App\Http\Controllers\DashboardController;
+// emitDashboardAlert('Congratulations', 'Your application installed successfully', 'success');
 session_start();
 $notices = null;
 if (!empty($_SESSION['dashboard-notices'])) {
@@ -115,7 +116,7 @@ if (!empty($_SESSION['dashboard-notices'])) {
                                 @endphp
                                 <div id="{{$id}}" class="dashboard-notice {{$noticeType ?? ''}}">
                                     <div class="flex w-full items-center justify-between">
-                                        <div class="font-bold">{{$details['name']}}</div>
+                                        <div class="font-bold">{{$details['title']}}</div>
                                         @if (!isset($details['persistent']))
                                             <div class="cursor-pointer" onclick="removeNotice('{{$id}}')">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
@@ -142,23 +143,116 @@ if (!empty($_SESSION['dashboard-notices'])) {
             </div>
         </div>
     </div>
-    <div class="fixed right-4 bottom-32">jkhgjksnzfj</div>
-<script>
-    function removeNotice(id)
-    {
-        let notice = document.querySelector(`#${id}`);
-        let container = notice.parentElement;
+    <div class="dashboard-alert hidden" id="dashboard_alert_id">
+        {{-- <div class="dashboard-alert-nav">
+            <span class="dashboard-alert-nav-control"><</span>
+            <span>1/1</span>
+            <span class="dashboard-alert-nav-control">></span>
+        </div> --}}
+    </div>
 
-        fetch(`/notices/remove/${id}`)
-        .then((res) => {
-            if (res.ok) {
-                return res;
-            }
-        })
-        .then((data) => {
-            console.log(data);
-            container.removeChild(notice);
-        });
+<script>
+function removeNotice(id)
+{
+    let notice = document.querySelector(`#${id}`);
+    let container = notice.parentElement;
+
+    fetch(`/notices/remove/${id}`)
+    .then((res) => {
+        if (res.ok) {
+            return res;
+        }
+    })
+    .then((data) => {
+        container.removeChild(notice);
+    });
+}
+
+function showDashboardAlerts()
+{
+    let alertId = document.querySelector('#dashboard_alert_id');
+    alertId.innerHTML = parseDashboardAlerts();
+    alertId.classList.remove('hidden');
+}
+
+function emitDashboardAlert(title, message,type)
+{
+    const d = new Date();
+    d.setTime(d.getTime() + 15000);
+    document.cookie = `dashboard-alerts= ${title}|${message}|${type};expires=${d.toUTCString()};SameSite=Strict;secure;`;
+}
+
+// window.onload = () => emitDashboardAlert('Congratulations', 'Your application installed successfully', 'success');
+
+function parseDashboardAlerts()
+{
+    let html = '';
+    let alerts = [];
+    let alert = '';
+    let cname = 'dashboard-alerts';
+    let name = `${cname}=`;
+    let ca = decodeURIComponent(document.cookie);
+    let alertArr = ca.split(';');
+    for (let i = 0; i <alertArr.length; i++) {
+        let c = alertArr[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            alert = c.substring(name.length, c.length);
+            break;
+        }
     }
+
+    if (alert.length == 0) {
+        return [];
+    }
+
+    alerts = (alert.split('=')[0]).split('|');
+    // console.log(alerts);
+
+    let alertType = alerts[2] != undefined ? alerts[2] : 'info';
+    html += `<div class="alert alert-${alertType}">`;
+    html += `<div class="alert-title">${alerts[0]}</div>`;
+    html += `<div class="alert-msg">${alerts[1]}</div>`;
+    html += `</div>`;
+
+    return html;
+}
+
+var timer;
+function removeDashboardAlerts()
+{
+    let alertId = document.querySelector('#dashboard_alert_id');
+    alertId.classList.add('alert-fade');
+
+    timer = setTimeout(() => {
+        clearTimeout(timer);
+        alertId.classList.add('hidden');
+        // alertId.innerHTML = alertId.firstElementChild.outerHTML;
+    }, 15000);
+}
+
+setInterval(() => {
+    let alerts = parseDashboardAlerts();
+    console.log(`interval`);
+    if (alerts.length > 0) {
+        showDashboardAlerts();
+        removeDashboardAlerts();
+    }
+}, 5000);
+
+let alertBox = document.querySelector('#dashboard_alert_id');
+alertBox.onmouseover = () => {
+    clearTimeout(timer);
+    alertBox.classList.remove('alert-fade');
+    alertBox.style.display = 'block';
+    alertBox.classList.remove('hidden');
+}
+alertBox.onmouseout = () => {
+    alertBox.style.display = '';
+    alertBox.style.cssText = '';
+    removeDashboardAlerts();
+}
 </script>
 </x-app-layout>

@@ -26,6 +26,11 @@ class SettingController extends Controller
             settings('w', "$key.$setting", $value);
         }
 
+        addDashboardNotice('nidavel_settings', [
+            'title' => 'Settings',
+            'message' => 'Settings has been updated on '.date(DATE_RSS, time())
+        ]);
+
         return redirect()->back();
     }
 

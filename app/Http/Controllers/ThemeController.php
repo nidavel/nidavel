@@ -25,6 +25,11 @@ class ThemeController extends Controller
         $theme = $urlExplode[count($urlExplode) - 1];
         activateTheme($theme);
 
+        addDashboardNotice('theme_activate', [
+            'title' => 'Theme activate',
+            'message' => "Theme '$plugin' activated successfully."
+        ]);
+
         return redirect()->back();
     }
 

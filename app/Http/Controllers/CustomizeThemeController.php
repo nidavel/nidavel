@@ -15,6 +15,11 @@ class CustomizeThemeController extends Controller
     {
         setThemeColor($request->theme_color);
 
+        addDashboardNotice('set_theme_color', [
+            'title' => 'Set theme color',
+            'message' => "Theme color set successfully."
+        ]);
+
         return redirect()->back();
     }
 

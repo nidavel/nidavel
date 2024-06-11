@@ -8,7 +8,6 @@ use App\Models\Post;
 use App\Models\Category;
 use App\Http\Requests\StoreExportRequest;
 use App\Http\Requests\UpdateExportRequest;
-// use Session;
 
 
 class ExportController extends Controller
@@ -132,6 +131,11 @@ class ExportController extends Controller
 
         fwrite($fp, $res);
         fclose($fp);
+
+        addDashboardNotice('export_homepage', [
+            'title' => 'Homepage exported',
+            'message' => "Homepage exported successfully."
+        ]);
 
         return redirect()->back();
     }
@@ -276,6 +280,11 @@ class ExportController extends Controller
             fclose($fp);
         }
 
+        addDashboardNotice('export_posts', [
+            'title' => 'Posts exported',
+            'message' => "Posts exported successfully."
+        ]);
+
         return redirect()->back();
     }
 
@@ -338,6 +347,11 @@ class ExportController extends Controller
         }
 
         $this->exportFilePages();
+
+        addDashboardNotice('export_pages', [
+            'title' => 'Pages exported',
+            'message' => "Pages exported successfully."
+        ]);
 
         return redirect()->back();
     }
@@ -432,6 +446,11 @@ class ExportController extends Controller
         
         unlink(public_path("/my_exports/$subdirectory".$request->export));
 
+        addDashboardNotice('delete_export', [
+            'title' => 'Delete export',
+            'message' => "Export deleted successfully."
+        ]);
+
         return redirect()->back();
     }
 
@@ -471,6 +490,11 @@ class ExportController extends Controller
         $this->clearOrphanedPages($exportedPages, $pageLinks);
 
         $this->clearOrphanedCategories($categories);
+
+        addDashboardNotice('clear_orphaned', [
+            'title' => 'Clear orphaned exports',
+            'message' => "Orphaned exports cleared successfully."
+        ]);
 
         return redirect()->back();
     }

@@ -1,12 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="{{ settings('r', 'general.theme_color')}}" >
         {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
-        <link rel="stylesheet" href="{{ homeUrl('/assets/css/style.css', 1) }}">
-        <script type="text/javascript" src="{{ homeUrl('/assets/js/script.js', 1) }}" defer></script>
+        <link rel="stylesheet" href="{{ homeUrl('/assets/css/style.css') }}">
+        <script type="text/javascript" src="{{ homeUrl('/assets/js/script.js') }}" defer></script>
         <title>{{ settings('r', "general.name", "Nidavel") }} | Home</title>
     </head>
 

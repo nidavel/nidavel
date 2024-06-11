@@ -16,6 +16,11 @@ class PluginController extends Controller
         $plugin = $this->getPluginNameFromUrl($request->url());
         activatePlugin($plugin);
 
+        addDashboardNotice('plugin_activate', [
+            'title' => 'Plugin activate',
+            'message' => "Plugin '$plugin' activated successfully."
+        ]);
+
         return redirect()->back();
     }
 
@@ -24,6 +29,11 @@ class PluginController extends Controller
         $plugin = $this->getPluginNameFromUrl($request->url());
         deactivatePlugin($plugin);
 
+        addDashboardNotice('plugin_deactivate', [
+            'title' => 'Plugin deactivate',
+            'message' => "Plugin '$plugin' deactivated successfully."
+        ]);
+
         return redirect()->back();
     }
 
@@ -31,6 +41,11 @@ class PluginController extends Controller
     {
         $plugin = $this->getPluginNameFromUrl($request->url());
         deletePlugin($plugin);
+
+        addDashboardNotice('plugin_delete', [
+            'title' => 'Plugin delete',
+            'message' => "Plugin '$plugin' deleted successfully."
+        ]);
 
         return redirect()->back();
     }

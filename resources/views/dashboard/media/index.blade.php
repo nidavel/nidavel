@@ -91,7 +91,7 @@
         </div>
 
         <div class="media-preview-object">
-            <form action="/media/add" method="post" enctype="multipart/form-data">
+            <form class="flex flex-col gap-4" action="/media/add" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="media_type" value="{{ strtolower($subtitle) }}">
 
                 <input
@@ -101,7 +101,7 @@
                  multiple
                  >
 
-                <button type="submit">Done</button>
+                <button class="bg-blue-500 text-white py-1 rounded w-32" type="submit">Done</button>
             </form>
         </div>
     </div>
@@ -201,7 +201,7 @@
                 // 
             }
         })
-        .then((data)        => {
+        .then((data) => {
             window.location.reload();
         });
     }
