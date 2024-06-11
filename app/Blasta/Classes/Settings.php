@@ -67,6 +67,14 @@ class Settings
         return static::$settings;
     }
 
+    public function initialize(string $key, $value)
+    {
+        static::$settings[$key] = $value;
+
+        $this->write();
+        $this->refresh();
+    }
+
     public function clear(string $key)
     {
         unset(static::$settings[$key]);

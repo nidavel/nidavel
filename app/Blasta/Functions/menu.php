@@ -16,7 +16,7 @@ function addMenu(string $title, string $url, ?string $target = null)
 function getMenuList()
 {
     $settings = Settings::getInstance();
-    return $settings->list('menu');
+    return $settings->list('menu') ?? [];
 }
 
 function removeMenu(string $title)
@@ -28,7 +28,9 @@ function removeMenu(string $title)
 function clearMenu()
 {
     $settings = Settings::getInstance();
-    $settings->clear('menu');
+    // $settings->clear('menu');
+    $settings->initialize('menu', []);
+    // $settings->add('menu', []);
 }
 
 function getMenu()

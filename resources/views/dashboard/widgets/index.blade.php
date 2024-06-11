@@ -231,6 +231,7 @@ function widgetAreaSubmit(e, theWidgetArea)
         e.disabled      = false;
         e.textContent   = 'Done';
         e.classList.remove('opacity-50');
+        emitDashboardAlert('Widget', 'Widgets modified successfully', 'success');
     });
 }
 

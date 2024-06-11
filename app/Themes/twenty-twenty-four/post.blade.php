@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', settings('r', 'general.locale')) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,6 +7,8 @@
         <link rel="stylesheet" href="{{ homeUrl('/assets/css/style.css', 1) }}">
         <script type="text/javascript" src="{{ homeUrl('/assets/js/script.js', 1) }}" defer></script>
         {!! postHead($post) !!}
+        {!!customizedStyles()!!}
+        {!! getHead() !!}
     </head>
 
     <body>

@@ -239,7 +239,7 @@ link {
 }
 
 .theme-container {
-    @apply flex flex-col gap-2 w-full h-64 sm:w-[210px] sm:h-[200px] md:w-[360px] md:h-[250px] border bg-gray-50 shadow-lg rounded overflow-hidden;
+    @apply flex flex-col gap-2 w-full h-64 sm:w-[210px] sm:h-[200px] md:w-[29%] md:h-[250px] border bg-gray-50 shadow-lg rounded overflow-hidden;
 }
 
 .theme-img-container {

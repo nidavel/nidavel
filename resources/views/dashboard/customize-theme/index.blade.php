@@ -368,10 +368,13 @@ function submitStyleForm(e, name)
         });
         if (res.ok) {
             return res;
+        } else {
+            emitDashboardAlert('Error: Customized style', 'Customized style did not update successfully.', 'error');
         }
     })
     .then((data) => {
         console.log(data);
+        emitDashboardAlert('Customized style', 'Customized style updated successfully.', 'success');
     });
 }
 

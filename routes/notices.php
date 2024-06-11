@@ -8,11 +8,3 @@ Route::get('/remove/{notice}', function ($notice) {
         'msg' => 'success'
     ]);
 });
-
-Route::get('/get-dashboard-alerts', function () {
-    if (!empty($_COOKIE['dashboard-alerts'])) {
-        return json_encode($_COOKIE['dashboard-alerts']);
-    }
-
-    return null;
-});

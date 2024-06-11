@@ -54,6 +54,11 @@ class MediaController extends Controller
                 $file->store("/$request->media_type");
             }
         }
+
+        addDashboardNotice('media_add', [
+            'title' => 'Media added',
+            'message' => "$request->media_type added successfully."
+        ]);
         
         return redirect()->back();
     }
@@ -65,6 +70,10 @@ class MediaController extends Controller
     {
         $body = $request->getContent();
         unlink(public_path("$body"));
+        addDashboardNotice('media_delete', [
+            'title' => 'Media deleted',
+            'message' => "$body deleted successfully."
+        ]);
         return response()->json([
             'status' => 'success'
         ]);

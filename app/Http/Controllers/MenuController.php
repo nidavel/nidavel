@@ -41,6 +41,11 @@ class MenuController extends Controller
             $x = ($x + 1) % 3;
         }
 
+        addDashboardNotice('menu_modify', [
+            'title' => 'Menu modify',
+            'message' => "Menu modified successfully."
+        ]);
+
         return redirect()->back();
     }
 }
