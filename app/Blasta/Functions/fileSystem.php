@@ -96,11 +96,6 @@ function rrmdir($path)
                  RecursiveIteratorIterator::CHILD_FIRST);
     foreach($files as $file) {
         if ($file->isDir()) {
-            // if (count(getContents($file->getPathname())) > 0) {
-            //     rrmdir($file->getPathname());
-            // } else {
-            //     rmdir($file->getPathname());
-            // }
             rmdir($file->getPathname());
         } else {
             unlink($file->getPathname());

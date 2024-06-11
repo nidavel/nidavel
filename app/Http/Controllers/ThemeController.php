@@ -27,7 +27,7 @@ class ThemeController extends Controller
 
         addDashboardNotice('theme_activate', [
             'title' => 'Theme activate',
-            'message' => "Theme '$plugin' activated successfully."
+            'message' => "Theme '$theme' activated successfully."
         ]);
 
         return redirect()->back();
