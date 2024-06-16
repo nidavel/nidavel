@@ -55,7 +55,7 @@ require_once public_path('js/tinymce-shortcodes.php');
                                         </svg>
                                     </div>
                                 </div>
-                                <div id="update_options" class="absolute hidden transition duration-500 bg-blue-400 border-blue-400 border rounded top-24 right-12">
+                                <div id="update_options" class="absolute hidden transition duration-500 bg-blue-400 border-blue-400 border rounded top-16 right-8">
                                     <ul>
                                         <li class="post-edit-update-options-btns"><label for="update_id">Update</label></li>
                                         <li class="post-edit-update-options-btns"><label for="updatePublish_id">Update and publish</label></li>

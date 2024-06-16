@@ -35,8 +35,20 @@ class PostController extends Controller
     public function all(Request $request)
     {
         $filter = $request->filter;
-        $limit = 5;
-        if (!isset($filter) || $filter === '') {
+        $limit = settings('r', 'general.query_limit');
+        if (isset($request->q)) {
+            $q = $request->q;
+            $posts = Post::where('title', 'LIKE', "%$q%")
+                ->orWhere('content', 'LIKE', "%$q%")
+                ->orWhere('keywords', 'LIKE', "%$q%")
+                ->latest()
+                ->orderBy('id', 'DESC')
+                ->paginate($limit);
+            $posts->withPath('/dashboard?route=posts/all');
+            $subtitle = $q;
+        }
+
+        else if (!isset($filter) || $filter === '') {
             $posts = Post::where('post_type', 'post')
                 ->latest()
                 ->orderBy('id', 'DESC')
@@ -65,6 +77,18 @@ class PostController extends Controller
             $subtitle = 'Drafts';
         }
 
+        else if ($filter === 'search') {
+            $q = $request->q;
+            $posts = Post::where('title', 'LIKE', "%$q%")
+                ->orWhere('content', 'LIKE', "%$q%")
+                ->orWhere('keywords', 'LIKE', "%$q%")
+                ->latest()
+                ->orderBy('id', 'DESC')
+                ->paginate($limit);
+            $posts->withPath('/dashboard?route=posts/all/search');
+            $subtitle = $q;
+        }
+
         else if ($filter === 'trashed') {
             $posts = Post::where('post_type', 'post')
                 ->onlyTrashed()
@@ -83,6 +107,29 @@ class PostController extends Controller
             $posts->withPath('/dashboard?route=posts/all');
             $subtitle = 'All Posts';
         }
+
+        return view('dashboard.posts.index', [
+            'posts'     => $posts,
+            'subtitle'  => $subtitle
+        ]);
+    }
+
+    /**
+     * Display a listing of the search resource in the dashboard.
+     */
+    public function search(Request $request)
+    {
+        $q = $request->q;
+        $limit = settings('r', 'general.query_limit');
+
+        $posts = Post::where('title', 'LIKE', "%$q%")
+            ->orWhere('content', 'LIKE', "%$q%")
+            ->orWhere('keywords', 'LIKE', "%$q%")
+            ->latest()
+            ->orderBy('id', 'DESC')
+            ->paginate($limit);
+        $posts->withPath('/dashboard?route=posts/all/search');
+        $subtitle = $q;
 
         return view('dashboard.posts.index', [
             'posts'     => $posts,
@@ -112,15 +159,26 @@ class PostController extends Controller
             switch ($post->post_type) {
                 case 'post':
                     PostPublished::dispatch($post);
-                    runFunctionsPostPublished($post);
+                    runFunctionsOnPostEvent('post-publish', $post);
                     break;
                 case 'page':
                     PagePublished::dispatch($post);
                     break;
                 default:
                     PostPublished::dispatch($post);
-                    runFunctionsPostPublished($post);
+                    runFunctionsOnPostEvent('post-publish', $post);
             }
+            addDashboardNotice('post_publish', [
+                'title' => 'Post published',
+                'message' => "Post '$post->title' has been published.",
+                'type' => 'success'
+            ]);
+        } else {
+            addDashboardNotice('post_save', [
+                'title' => 'Post save draft',
+                'message' => "Post '$post->title' has been saved.",
+                'type' => 'info'
+            ]);
         }
 
         return redirect("/dashboard?route=posts/edit/$post->id");
@@ -230,14 +288,14 @@ class PostController extends Controller
             switch ($post->post_type) {
                 case 'post':
                     PostPublished::dispatch($post);
-                    runFunctionsPostPublished($post);
+                    runFunctionsOnPostEvent('post-publish', $post);
                     break;
                 case 'page':
                     PagePublished::dispatch($post);
                     break;
                 default:
                     PostPublished::dispatch($post);
-                    runFunctionsPostPublished($post);
+                    runFunctionsOnPostEvent('post-publish', $post);
                     break;
             }
         }
@@ -251,6 +309,12 @@ class PostController extends Controller
     public function updateOnly(UpdatePostRequest $request, Post $post)
     {
         $this->update($request, $post);
+
+        addDashboardNotice('post_update', [
+            'title' => 'Post updated',
+            'message' => "Post '$post->title' has been updated.",
+            'type' => 'info'
+        ]);
 
         return redirect()->back();
     }
@@ -270,16 +334,22 @@ class PostController extends Controller
         switch ($post->post_type) {
             case 'post':
                 PostPublished::dispatch($post);
-                runFunctionsPostPublished($post);
+                runFunctionsOnPostEvent('post-publish', $post);
                 break;
             case 'page':
                 PagePublished::dispatch($post);
                 break;
             default:
                 PostPublished::dispatch($post);
-                runFunctionsPostPublished($post);
+                runFunctionsOnPostEvent('post-publish', $post);
                 break;
         }
+
+        addDashboardNotice('post_update', [
+            'title' => 'Post updated and published',
+            'message' => "Post '$post->title' has been updated and published.",
+            'type' => 'success'
+        ]);
 
         return redirect()->back();
     }
@@ -303,6 +373,12 @@ class PostController extends Controller
                 break;
         }
 
+        addDashboardNotice('post_delete', [
+            'title' => 'Post deleted',
+            'message' => "Post '$post->title' has been deleted.",
+            'type' => 'info'
+        ]);
+
         return redirect()->back();
     }
 
@@ -318,17 +394,23 @@ class PostController extends Controller
             switch ($post->post_type) {
                 case 'post':
                     PostPublished::dispatch($post);
-                    runFunctionsPostPublished($post);
+                    runFunctionsOnPostEvent('post-publish', $post);
                     break;
                 case 'page':
                     PagePublished::dispatch($post);
                     break;
                 default:
                     PostPublished::dispatch($post);
-                    runFunctionsPostPublished($post);
+                    runFunctionsOnPostEvent('post-publish', $post);
                     break;
             }
         }
+
+        addDashboardNotice('post_restore', [
+            'title' => 'Post restored',
+            'message' => "Post '$post->title' has been restored.",
+            'type' => 'info'
+        ]);
 
         return redirect()->back();
     }
@@ -338,7 +420,16 @@ class PostController extends Controller
      */
     public function destroy(Request $request)
     {
-        Post::onlyTrashed()->where('id', $request->post)->forceDelete();
+        $post = Post::onlyTrashed()->where('id', $request->post);
+        $postTitle = $post->first()->title;
+        $post->forceDelete();
+
+        addDashboardNotice('post_destroy', [
+            'title' => 'Post destroyed',
+            'message' => "Post '$postTitle' destroyed successfully.",
+            'type' => 'info'
+        ]);
+
         return redirect()->back();
     }
 }

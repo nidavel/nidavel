@@ -125,7 +125,7 @@ if (!empty($_SESSION['dashboard-notices'])) {
                                             </div>
                                         @endif                                        
                                     </div>
-                                    <div>{{$details['message']}}</div>
+                                    <div>{!! $details['message'] !!}</div>
                                 </div>
                             @endforeach
                         @endif

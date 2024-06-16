@@ -32,9 +32,8 @@ use Carbon\Carbon;
                 <span class="text-gray-300">|</span>
                 <span class="text-blue-500"><a href="/dashboard?route=posts/all/trashed">Trashed</a></span>
                 <span class="justify-self-end ml-auto hidden lg:inline-block">
-                    <form method="GET">
-                        @csrf
-                        <input type="search" placeholder="Search posts" class="shadow border-gray-300"/>
+                    <form method="GET" action="">
+                        <input type="search" name="q" placeholder="Search posts" class="shadow border-gray-300"/>
                         <input type="submit" value="Search" class="border border-gray-300 hover:border-gray-400 p-2 cursor-pointer shadow" />
                     </form>
                 </span>

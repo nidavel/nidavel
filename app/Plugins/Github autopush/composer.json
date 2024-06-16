@@ -1,0 +1,16 @@
+{
+    "name": "nidavel/github-autopush",
+    "description": "This plugin automatically pushes your exports. For example when you publish a post, it automatically pushes it to Github. You are required to have git installed before it can work.",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Nidavel\\GithubAutopush\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nidavel"
+        }
+    ],
+    "require": {}
+}
