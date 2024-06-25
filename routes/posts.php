@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PostController;
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\BlastaDashboard;
 
@@ -19,6 +20,8 @@ Route::get('/', [PostController::class, 'index']);
 
 Route::get('/all', [PostController::class, 'all'])
     ->middleware(BlastaDashboard::class);
+
+Route::post('/all/search', [PostController::class, 'search']);
 
 Route::get('/create', [PostController::class, 'create'])
     ->middleware(BlastaDashboard::class);
