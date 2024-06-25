@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
+use App\Models\PinPost;
+use App\Http\Controllers\PinPostController;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
@@ -36,19 +38,9 @@ class PostController extends Controller
     {
         $filter = $request->filter;
         $limit = settings('r', 'general.query_limit');
-        if (isset($request->q)) {
-            $q = $request->q;
-            $posts = Post::where('title', 'LIKE', "%$q%")
-                ->orWhere('content', 'LIKE', "%$q%")
-                ->orWhere('keywords', 'LIKE', "%$q%")
-                ->latest()
-                ->orderBy('id', 'DESC')
-                ->paginate($limit);
-            $posts->withPath('/dashboard?route=posts/all');
-            $subtitle = $q;
-        }
-
-        else if (!isset($filter) || $filter === '') {
+        $pinController = new PinPostController;
+        
+        if (!isset($filter) || $filter === '') {
             $posts = Post::where('post_type', 'post')
                 ->latest()
                 ->orderBy('id', 'DESC')
@@ -85,8 +77,8 @@ class PostController extends Controller
                 ->latest()
                 ->orderBy('id', 'DESC')
                 ->paginate($limit);
-            $posts->withPath('/dashboard?route=posts/all/search');
-            $subtitle = $q;
+            $posts->withPath("/dashboard?route=posts/all/search&q=$q");
+            $subtitle = "Search results for '$q'";
         }
 
         else if ($filter === 'trashed') {
@@ -110,7 +102,8 @@ class PostController extends Controller
 
         return view('dashboard.posts.index', [
             'posts'     => $posts,
-            'subtitle'  => $subtitle
+            'subtitle'  => $subtitle,
+            'pinned'    => $pinController->getPinnedIDs()
         ]);
     }
 
@@ -120,21 +113,8 @@ class PostController extends Controller
     public function search(Request $request)
     {
         $q = $request->q;
-        $limit = settings('r', 'general.query_limit');
-
-        $posts = Post::where('title', 'LIKE', "%$q%")
-            ->orWhere('content', 'LIKE', "%$q%")
-            ->orWhere('keywords', 'LIKE', "%$q%")
-            ->latest()
-            ->orderBy('id', 'DESC')
-            ->paginate($limit);
-        $posts->withPath('/dashboard?route=posts/all/search');
-        $subtitle = $q;
-
-        return view('dashboard.posts.index', [
-            'posts'     => $posts,
-            'subtitle'  => $subtitle
-        ]);
+        return redirect()
+            ->to("http://localhost:8000/dashboard?route=posts/all/search&q=$q");
     }
 
     /**

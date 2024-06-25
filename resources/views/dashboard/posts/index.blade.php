@@ -32,7 +32,7 @@ use Carbon\Carbon;
                 <span class="text-gray-300">|</span>
                 <span class="text-blue-500"><a href="/dashboard?route=posts/all/trashed">Trashed</a></span>
                 <span class="justify-self-end ml-auto hidden lg:inline-block">
-                    <form method="GET" action="">
+                    <form method="POST" action="/posts/all/search">
                         <input type="search" name="q" placeholder="Search posts" class="shadow border-gray-300"/>
                         <input type="submit" value="Search" class="border border-gray-300 hover:border-gray-400 p-2 cursor-pointer shadow" />
                     </form>
@@ -53,6 +53,7 @@ use Carbon\Carbon;
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">Date created</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">Last modified</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">Edit</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">Pin to top</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">Delete</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">Export</th>
                                 </tr>
@@ -76,6 +77,23 @@ use Carbon\Carbon;
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                                             </svg>
                                         </a>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        @php
+                                            $textColor = in_array($post->id, $pinned)
+                                                ? 'text-green-500'
+                                                : 'text-blue-500';
+                                            $pinTitle = in_array($post->id, $pinned)
+                                                ? 'Unpin post'
+                                                : 'Pin post';
+                                        @endphp
+                                        <form class="{{$textColor}} cursor-pointer" method="POST" action="/pin-posts/toggle/{{$post->id}}">
+                                            <button type="submit" title="{{$pinTitle}}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="none" viewBox="0 0 320 512" class="w-4 h-4">
+                                                    <path d="M16 144a144 144 0 1 1 288 0A144 144 0 1 1 16 144zM160 80c8.8 0 16-7.2 16-16s-7.2-16-16-16c-53 0-96 43-96 96c0 8.8 7.2 16 16 16s16-7.2 16-16c0-35.3 28.7-64 64-64zM128 480V317.1c10.4 1.9 21.1 2.9 32 2.9s21.6-1 32-2.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32z"/>
+                                                </svg>
+                                            </button>
+                                        </form>
                                     </td>
                                     <td class="px-6 py-4">
                                         <form method="post" action="/posts/delete/{{$post->id}}">
@@ -114,7 +132,6 @@ use Carbon\Carbon;
                                 <tr>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">Title</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">Author</th>
-                                    {{-- <th scope="col" class="px-6 py-4 font-medium text-gray-900">Keywords</th> --}}
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">Status</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">Date created</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">Deleted at</th>
@@ -130,7 +147,6 @@ use Carbon\Carbon;
                                 <tr class="odd:bg-white even:bg-gray-100">
                                     <td class="px-6 py-4"><a class="text-blue-500" href="/posts/{{$post->id}}">{{ $post->title }}</a></td>
                                     <td class="px-6 py-4"><a class="text-blue-500" href="/users/{{$post->id}}">{{ $author }}</td>
-                                    {{-- <td class="px-6 py-4">{{ $post->keywords }}</a></td> --}}
                                     <td class="px-6 py-4">{{ $post->status }}</td>
                                     <td class="px-6 py-4">{{ $post->created_at }}</td>
                                     <td class="px-6 py-4">{{ $post->deleted_at }}</td>

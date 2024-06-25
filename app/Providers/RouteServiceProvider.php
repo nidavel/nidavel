@@ -43,6 +43,10 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->prefix('pages')
                 ->group(base_path('routes/pages.php'));
+            
+            Route::middleware('web')
+                ->prefix('pin-posts')
+                ->group(base_path('routes/pin-posts.php'));
 
             Route::middleware('web')
                 ->prefix('dashboard')
