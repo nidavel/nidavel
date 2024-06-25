@@ -17,7 +17,7 @@ Route::get('/github-autopush/push', function () {
     $ghAp = GithubAutopush::getInstance();
 
     if ($ghAp !== null) {
-        $ghAp::push('Direct push from settings');
+        $ghAp::push('Direct push from GitHub autopush settings');
     }
 
     return redirect()->back();

@@ -24,9 +24,6 @@ class GithubAutopush
             static::$repository = settings('r', 'github_autopush.repository');
             static::$pat        = settings('r', 'github_autopush.pat');
             static::$repoUrl    = 'https://'.static::$pat.'@github.com/'.static::$repository;
-            // static::$stdin      = fopen("php://stdin","r");
-            // static::$stdout     = fopen("php://stdout","w");
-            // static::$stderr     = fopen("php://stderr","w");
         }
 
         if (static::isConnected() === false) {

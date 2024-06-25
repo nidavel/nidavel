@@ -33,6 +33,7 @@ class UrlExports
     {
         $contents = [];
         $ignored = settings('r', 'sitemap.ignored_urls');
+        $stripHtmlExtension = settings('r', 'sitemap.strip_html_extension');
 
         $f_filter = fn ($o_file) => $o_file->getFilename() == '.git'
             || $o_file->getFilename() == 'assets'
@@ -58,36 +59,39 @@ class UrlExports
                 $path = substr($path, strpos($path, 'my_exports'));
                 $path = trim($path, 'my_exports');
                 $path = str_replace('\\', '/', $path);
+                $path = $stripHtmlExtension === null
+                    ? $path
+                    : str_replace('.html', '', $path);
                 $contents[$i]['path'] = $path;
                 $contents[$i]['mtime'] = $fileinfo->getMTime();
 
                 $fp = fopen($fileHandle, 'r');
-
-                foreach (static::getAllLines($fp) as $line) {
-                    $imgUrl = '';
-                    $str = [];
-                    if (!strpos($line, '<img')) {
-                        continue;
-                    }
-                    preg_match('/src=\".+\"/', $line, $matches);
-                    // preg_match("/\bsrc=\".+\" \b/", $line, $matches);
-                    $str = $matches[0];
-                    for ($x=0, $y=0; $x<2; $y++) {
-                        if ($str[$y] == '"') {
-                            $x++;
+                if ($fileinfo->getFilename() != 'index.html') {
+                    foreach (static::getAllLines($fp) as $line) {
+                        $imgUrl = '';
+                        $str = [];
+                        if (!strpos($line, '<img')) {
                             continue;
                         }
-                        
-                        if ($x < 1) {
-                            continue;
-                        }
+                        preg_match('/src=\".+\"/', $line, $matches);
+                        // preg_match("/\bsrc=\".+\" \b/", $line, $matches);
+                        $str = $matches[0];
+                        for ($x=0, $y=0; $x<2; $y++) {
+                            if ($str[$y] == '"') {
+                                $x++;
+                                continue;
+                            }
+                            
+                            if ($x < 1) {
+                                continue;
+                            }
 
-                        $imgUrl .= $str[$y];
+                            $imgUrl .= $str[$y];
+                        }
+                        $imgs[] = $imgUrl;
                     }
-                    $imgs[] = $imgUrl;
                 }
                 $contents[$i]['images'] = $imgs;
-
                 fclose($fp);
 
                 $i++;

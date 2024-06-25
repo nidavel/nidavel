@@ -163,6 +163,7 @@ class PostController extends Controller
                     break;
                 case 'page':
                     PagePublished::dispatch($post);
+                    runFunctionsOnPostEvent('post-publish', $post);
                     break;
                 default:
                     PostPublished::dispatch($post);

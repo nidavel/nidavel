@@ -4,6 +4,9 @@ use Nidavel\Sitemap\Classes\Sitemap;
 $sitemap = Sitemap::getInstance();
 $sitemapType = settings('r', 'sitemap.sitemap_type');
 $createRobots = settings('r', 'sitemap.create_robots');
+$stripHtmlExtension = !empty(settings('r', 'sitemap.strip_html_extension'))
+    ? 'checked'
+    : '';
 ?>
 
 <style>
@@ -37,6 +40,13 @@ $createRobots = settings('r', 'sitemap.create_robots');
             <option <?= $sitemapType === 'xml' ? 'selected' : '' ?> value="xml">XML</option>
             <option <?= $sitemapType === 'text' ? 'selected' : '' ?> value="text">Text</option>
         </select>
+    </label>
+</div>
+
+<div class="w-64">
+    <label class="flex flex-col gap-2">
+        <div>Strip .html extension</div>
+        <input class="border border-gray-400 rounded-lg" type="checkbox" <?= $stripHtmlExtension ?> value="checked" name="strip_html_extension" id="">
     </label>
 </div>
 

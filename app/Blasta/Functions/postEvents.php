@@ -32,6 +32,24 @@ function runOnPostDelete(string|array|callable $function = null)
 }
 
 /**
+ * Compiles the functions to run for each post event
+ */
+function compileFunctions(string|array|callable $function = null, &$functions)
+{
+    if (!is_null($function)) {
+        if (is_string($function)) {
+            $functions[] = $function;
+        }
+
+        if (is_array($function)) {
+            foreach ($function as $func) {
+                $functions[] = $func;
+            }
+        }
+    }
+}
+
+/**
  * Assigns function for respective post event
  */
 function runFunctionsOnPostEvent(string $event, Post $post)
@@ -50,24 +68,6 @@ function runFunctionsOnPostEvent(string $event, Post $post)
     }
     
     runFunctions($functions, $post);
-}
-
-/**
- * Compiles the functions to run for each post event
- */
-function compileFunctions(string|array|callable $function = null, &$functions)
-{
-    if (!is_null($function)) {
-        if (is_string($function)) {
-            $functions[] = $function;
-        }
-
-        if (is_array($function)) {
-            foreach ($function as $func) {
-                $functions[] = $func;
-            }
-        }
-    }
 }
 
 /**
