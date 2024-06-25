@@ -27,16 +27,18 @@ $allSettingsForms = allSettingsForms();
                 @if (!empty($allSettingsForms))
                     @foreach ($allSettingsForms as $title => $form)
                     <span class="text-gray-300">|</span>
-                    <span class="text-blue-500"><a href="/dashboard?route=settings&key={{$form['key']}}&title={{$title}}&resource={{base64_encode($form['resource'])}}">{{ $title }}</a></span>
+                    <span class="text-blue-500"><a href="/dashboard?route=settings&key={{$form['key']}}&title={{base64_encode($title)}}&resource={{base64_encode($form['resource'])}}">{{ $title }}</a></span>
                     @endforeach
                 @endif
+                <span class="text-gray-300">|</span>
+                <span class="text-blue-500"><a href="/dashboard?route=settings&key=advanced&title=Advanced&resource={{base64_encode(resource_path('views/dashboard/settings/advanced.php'))}}">Advanced</a></span>
             </div>
 
             <div>
                 <form action="/settings/set" method="post" class="flex flex-col gap-4">
                     <input type="hidden" name="key" value="{{$_GET['key'] ?? 'general'}}">
                 @if (!empty($_GET['resource']))
-                    <h2 class="font-bold text-2xl">{{ $_GET['title']}}</h2>
+                    <h2 class="font-bold text-2xl">{{ base64_decode($_GET['title']) }}</h2>
                     @php
                         include_once base64_decode($_GET['resource']);
                     @endphp

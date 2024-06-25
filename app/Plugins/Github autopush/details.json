@@ -1,0 +1,8 @@
+{
+    "description": "This plugin automatically pushes your exports. For example when you publish a post, it automatically pushes it to Github. You are required to have git installed before it can work.",
+    "version": "0.0.1",
+    "author": "Nidavel",
+    "author_url": "https://nidavel.com",
+    "plugin_url": "https://plugins.nidavel.com/github-autopush",
+    "misc": []
+}
