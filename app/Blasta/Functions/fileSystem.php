@@ -71,6 +71,26 @@ function getFiles(string $dir)
 }
 
 /**
+ * Returns a list of file paths in a directory
+ */
+function getFilepaths(string $dir)
+{
+    $files = [];
+    if (!file_exists($dir)) {
+        return $files;
+    }
+    
+    $dir = new DirectoryIterator($dir);
+    foreach ($dir as $fileinfo) {
+        if (!$fileinfo->isDot() && $fileinfo->isFile()) {
+            $files[] = $fileinfo->getPathName();
+        }
+    }
+
+    return $files;
+}
+
+/**
  * Deletes a directory
  */
 function deleteDir(string $path, bool $recursive = false)

@@ -1,0 +1,8 @@
+{
+    "description": "This plugin uses the File Transfer Protocol to make changes to your remote server. For instance when you publish a post, it automatically uploads the exported file to your remote server.",
+    "version": "0.0.1",
+    "author": "Nidavel",
+    "author_url": "https://nidavel.com",
+    "plugin_url": "https://plugins.nidavel.com/ftp-autoload",
+    "misc": []
+}

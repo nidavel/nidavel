@@ -345,12 +345,15 @@ class PostController extends Controller
         switch ($post->post_type) {
             case 'post':
                 PostDeleted::dispatch($post);
+                runFunctionsOnPostEvent('post-delete', $post);
                 break;
             case 'page':
                 PageDeleted::dispatch($post);
+                runFunctionsOnPostEvent('post-delete', $post);
                 break;
             default:
                 PostDeleted::dispatch($post);
+                runFunctionsOnPostEvent('post-delete', $post);
                 break;
         }
 

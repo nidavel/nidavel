@@ -1,0 +1,16 @@
+{
+    "name": "nidavel/ftp-auto-push",
+    "description": "This plugin uses the File Transfer Protocol to make changes to your remote server. For instance when you publish a post, it automatically uploads the exported file to your remote server.",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Nidavel\\FtpAutoLoad\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nidavel"
+        }
+    ],
+    "require": {}
+}
