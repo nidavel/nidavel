@@ -9,6 +9,10 @@ registerSettingsForm('GitHub autopush', 'github_autopush', plugin_path('Github a
 
 function pushToRepo($post)
 {
+    if (empty(settings('r', 'github_autopush.push_on_post_publish'))) {
+        return;
+    }
+    
     $ghAp = GithubAutopush::getInstance();
     if ($ghAp != null) {
         $ghAp::push($post->title);

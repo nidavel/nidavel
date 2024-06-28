@@ -2,8 +2,6 @@
 
 namespace Nidavel\GithubAutopush\Classes;
 
-// require_once 'C:/dev/nidavel/app/Blasta/Functions/settings.php';
-
 class GithubAutopush
 {
     private static $instance    = null;
@@ -28,19 +26,17 @@ class GithubAutopush
 
         if (static::isConnected() === false) {
             static::$instance = null;
-            addDashboardNotice('github_autopush', [
-                'title' => 'GitHub autopush',
-                'message' => "Internet disconnected. Connect to the internet and try again.",
-                'type' => 'warning'
-            ]);
+            static::dashboardNotice(
+                'Internet disconnected. Connect to the internet and try again.',
+                'warning'
+            );
         }
         else if (static::isRepoValid() === false) {
             static::$instance = null;
-            addDashboardNotice('github_autopush', [
-                'title' => 'GitHub autopush',
-                'message' => "Repository given does not exist. Check your settings.",
-                'type' => 'warning'
-            ]);
+            static::dashboardNotice(
+                'Repository given does not exist. Check your settings.',
+                'warning'
+            );
         }
         
         return static::$instance;
@@ -84,11 +80,7 @@ class GithubAutopush
         
         $messageType = $x === count($commands) ? 'success' : 'warning';
 
-        addDashboardNotice('github_autopush', [
-            'title' => 'GitHub autopush',
-            'message' => $message,
-            'type' => $messageType
-        ]);
+        static::dashboardNotice($message, $messageType);
     }
 
     public static function push(string $commitMessage)
@@ -126,11 +118,7 @@ class GithubAutopush
         
         $messageType = $x === count($commands) ? 'success' : 'warning';
 
-        addDashboardNotice('github_autopush', [
-            'title' => 'GitHub autopush',
-            'message' => $message,
-            'type' => $messageType
-        ]);
+        static::dashboardNotice($message, $messageType);
     }
 
     private static function run(string $command)
@@ -159,15 +147,14 @@ class GithubAutopush
 
     private static function isConnected()
     {
-        $repo = static::$repository;
         $connected = @fsockopen("github.com", 80);
+
         if ($connected) {
-            $is_conn = true; //action when connected
             fclose($connected);
-        } else {
-            $is_conn = false; //action in connection failure
+            return true;
         }
-        return $is_conn;
+
+        return false;
     }
 
     private static function isRepoValid()
@@ -185,5 +172,14 @@ class GithubAutopush
         }
 
         return $status;
+    }
+
+    private static function dashboardNotice(string $message, string $type)
+    {
+        addDashboardNotice('github_autopush', [
+            'title'     => 'GitHub autopush',
+            'message'   => $message,
+            'type'      => $type
+        ]);
     }
 }
