@@ -28,6 +28,7 @@ echo " version $version\n\n";
 
 $srv1 = 'php -S localhost:8000 -t public';
 $srv2 = 'php -S localhost:8001 -t public';
+$keygen = 'php artisan key:generate';
 
 $descriptorspec = array(
    0 => STDIN,
@@ -35,6 +36,9 @@ $descriptorspec = array(
    2 => STDERR
 );
 
+if (file_exists('./install')) {
+  $keygenprocess = proc_open($keygen, $descriptorspec, $pipes);
+}
 $process1 = proc_open($srv1, $descriptorspec, $pipes);
 $process2 = proc_open($srv2, $descriptorspec, $pipes);
 
@@ -56,4 +60,14 @@ if (is_resource($process2)) {
     $return_value = proc_close($process2);
 
     echo "command returned $return_value\n";
+}
+
+if (is_resource($keygenprocess)) {
+  fclose(STDIN);
+  fclose(STDOUT);
+  fclose(STDERR);
+
+  $return_value = proc_close($keygenprocess);
+
+  echo "command returned $return_value\n";
 }

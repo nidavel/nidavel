@@ -12,6 +12,8 @@
 - Meta: `posts` open graph meta now automatically attaches to the head
 - Settings: Domain and protocol settings
 - Command: `export-assets`
+- Added: Env key regenerates on first run
+
 ### Fixed
 - Hook: `getIcons` - Fixed unpredective behavior of the icons by adding getIcons hook
 
