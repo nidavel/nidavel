@@ -21,6 +21,8 @@ class PluginController extends Controller
             'message' => "Plugin '$plugin' activated successfully."
         ]);
 
+        runFunctionsOnPluginEvent('plugin-activate', $plugin);
+
         return redirect()->back();
     }
 
@@ -34,6 +36,8 @@ class PluginController extends Controller
             'message' => "Plugin '$plugin' deactivated successfully."
         ]);
 
+        runFunctionsOnPluginEvent('plugin-deactivate', $plugin);
+
         return redirect()->back();
     }
 
@@ -46,6 +50,8 @@ class PluginController extends Controller
             'title' => 'Plugin delete',
             'message' => "Plugin '$plugin' deleted successfully."
         ]);
+
+        runFunctionsOnPluginEvent('plugin-delete', $plugin);
 
         return redirect()->back();
     }

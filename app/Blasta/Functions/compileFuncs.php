@@ -9,6 +9,7 @@ function compileFuncs()
         'blastaGlobalFunctions.php',
         'index.php',
         'compileFuncs.php',
+        'postEvents.php',
         'publishEventExport.php',
         'home.php',
         'categories.php',

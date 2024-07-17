@@ -47,6 +47,9 @@ class FeedType
 
     public static function view()
     {
-        return file_get_contents(public_path('my_exports/feed.xml'));
+        if (file_exists(public_path('my_exports/feed.xml'))) {
+            return file_get_contents(public_path('my_exports/feed.xml'));
+        }
+        return '';
     }
 }

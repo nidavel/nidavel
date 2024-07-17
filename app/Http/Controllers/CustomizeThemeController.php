@@ -6,9 +6,14 @@ use Illuminate\Http\Request;
 
 class CustomizeThemeController extends Controller
 {
-    public function index()
+    // public function index()
+    // {
+    //     return view('dashboard.customize-theme.index');
+    // }
+
+    public function show()
     {
-        return view('dashboard.customize-theme.index');
+        return view('dashboard.customize-theme.show');
     }
 
     public function setThemeColor(Request $request)

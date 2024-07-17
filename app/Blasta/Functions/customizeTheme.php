@@ -141,6 +141,11 @@ function isSelectorCustomized(string $input)
     }
 
     $styleFile = base_path("app/CustomizedStyles/$name");
+    
+    if (!file_exists($styleFile)) {
+        return false;
+    }
+
     $style = file_get_contents(base_path("app/CustomizedStyles/$name"));
 
     if (strpos($style, $selector)) {
@@ -169,6 +174,11 @@ function isPropertyCustomized(string $input)
     }
 
     $styleFile = base_path("app/CustomizedStyles/$name");
+
+    if (!file_exists($styleFile)) {
+        return false;
+    }
+
     $style = file_get_contents($styleFile);
 
     if (strpos($style, $selector)) {
@@ -211,15 +221,14 @@ function isPropertyCustomized(string $input)
 }
 
 /**
- * This function gets the value of a given property in a customized style
+ * This function gets the value of a given selector in a customized style
  */
-function getCustomizedPropertyValue(string $input)
+function getCustomizedSelectorValue(string $input)
 {
     $value = null;
     $input = explode("'", $input);
     $styleFile = base_path('app/CustomizedStyles/'.$input[0]);
     $selector = $input[1];
-    $property = $input[2];
 
     if (!file_exists($styleFile)) {
         return null;
@@ -229,7 +238,7 @@ function getCustomizedPropertyValue(string $input)
     $content = null;
     $fp = fopen($styleFile, 'r');
     foreach (readFileLine($fp) as $line) {
-        $matchx = getPropertyAndValue($line, $selector, $property);
+        $matchx = getSelectorValue($line, $selector);
         if (is_null($matchx)) {
             continue;
         } else {
@@ -239,8 +248,7 @@ function getCustomizedPropertyValue(string $input)
 
     fclose($fp);
     if (!empty($matchx)) {
-        $value = ltrim($matchx, "$property:");
-        $value = rtrim($value, ';');
+        $value = str_replace('--color:', '', $matchx);
     }
 
     return "$value";
@@ -249,40 +257,17 @@ function getCustomizedPropertyValue(string $input)
 /**
  * This function returns the specified property and value of a given selector
  */
-function getPropertyAndValue(string $line, string $selector, string $property)
+function getSelectorValue(string $line, string $selector)
 {
-    $propIdx = null;
-    $content = null;
-    $matchx = '';    
     $idx = strpos($line, $selector);
-    $falsePositives = [
-        'color'
-    ];
+    $selectorValue = '';
 
     if ($idx < 1) {
         return null;
     } else {
-        if (in_array($property, $falsePositives)) {
-            $content = substr($line, strpos($line, $property) - 1);
-
-            while ($content[0] === '-' && strlen($content) > 0) {
-                $content = substr($line, strpos($content, $property) - 1);
-                if ($content[0] !== '-') {
-                    $content = substr($line, strpos($content, $property) - 1, strlen($property) + 1);
-                    break;
-                }
-            }
-            
-            $content = ltrim($content, $content[0]);
-            $propIdx = strpos($line, $content);
-        } else {
-            $propIdx = strpos($line, $property);
-            $content = substr($line, $propIdx);
-        }
-        
-        $matchx = substr($content, 0, strpos($content, ';'));
-
-        return $matchx;
+        $values = explode(';', $line);
+        $selectorValue = substr($values[0], strpos($values[0], '--color'));
+        return !empty($selectorValue) ? $selectorValue : null;
     }
 }
 

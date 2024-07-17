@@ -66,7 +66,7 @@ class GithubAutopush
 
         $x = 0;
         foreach ($commands as $command) {
-            $returnValue = static::run("cd $gitDir && $command");
+            $returnValue = static::run("cd '$gitDir' && $command");
             $message .= "$command - ";
             if ($returnValue === 1) {
                 $message .= " failed.<br>";
@@ -91,6 +91,7 @@ class GithubAutopush
         $gitDir = public_path('my_exports/.git');
 
         if (!file_exists($gitDir)) {
+            static::dashboardNotice('Initialize git repositiory first', 'warning');
             return;
         }
 
@@ -104,7 +105,7 @@ class GithubAutopush
 
         $x = 0;
         foreach ($commands as $command) {
-            $returnValue = static::run("cd $gitDir && $command");
+            $returnValue = static::run("cd '$gitDir' && $command");
             $message .= "$command - ";
             if ($returnValue === 1) {
                 $message .= " failed.<br>";
@@ -160,7 +161,7 @@ class GithubAutopush
     private static function isRepoValid()
     {
         $repo = static::$repository;
-        $url = rtrim("https://github.com/$repo", '.git');
+        $url = str_replace('.git', '', "https://github.com/$repo");
         $status = false;
   
         // Use get_headers() function

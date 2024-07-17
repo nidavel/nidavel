@@ -30,6 +30,8 @@ class ThemeController extends Controller
             'message' => "Theme '$theme' activated successfully."
         ]);
 
+        runFunctionsOnThemeEvent('theme-activate');
+
         return redirect()->back();
     }
 
