@@ -87,7 +87,7 @@ function runFunctionsOnPluginEvent(string $event, string $pluginName)
 /**
  * Runs the function names given as string
  */
-function runPluginEventFunctions(array $functions, string $pluginName)
+function runPluginEventFunctions(array|null $functions = null, string|null $pluginName = null)
 {
     if (!empty($functions[$pluginName])) {
         foreach ($functions[$pluginName] as $function) {
