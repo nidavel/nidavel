@@ -83,7 +83,9 @@ class PageController extends Controller
             'pages/all/drafts',
             'pages/all/trashed',
             'pages/all/{filter}',
-            'pages/all/{page}'
+            'pages/all/{page}',
+            'plugins/{pluginfolder}',
+            'plugins/{pluginfolder}/{plugin}'
         ];
 
         $pages = Post::where('post_type', 'page')
@@ -157,7 +159,9 @@ class PageController extends Controller
             'pages/all/drafts',
             'pages/all/trashed',
             'pages/all/{filter}',
-            'pages/all/{page}'
+            'pages/all/{page}',
+            'plugins/{pluginfolder}',
+            'plugins/{pluginfolder}/{plugin}'
         ];
         $routes = Route::getRoutes();
         
