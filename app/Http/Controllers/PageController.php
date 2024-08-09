@@ -117,6 +117,9 @@ class PageController extends Controller
         }
 
         foreach ($filePages as $file) {
+            if ($file == 'settings.php' || $file == 'settings.blade.php') {
+                continue;
+            }
             $link = rtrim($file, '.blade.php');
             $pagesFinal = [...$pagesFinal, [
                 'title' => linkToTitle($link),
