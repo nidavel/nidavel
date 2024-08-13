@@ -73,7 +73,7 @@ function runFunctionsOnPostEvent(string $event, Post $post)
 /**
  * Runs the function names given as string
  */
-function runFunctions(array $functions, Post $post)
+function runFunctions(?array $functions, Post $post)
 {
     if (!empty($functions)) {
         foreach ($functions as $function) {
