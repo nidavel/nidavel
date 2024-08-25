@@ -1,12 +1,12 @@
 ## About Nidavel
 
-Nidavel is a Content Management System built with Laravel which focuses on producing beautiful, professional static content. Think of it as a WordPress for Laravel, with the ability to generate static contents of the whole website.
+[Nidavel](https://nidavel.com) is a Content Management System built with Laravel which focuses on producing beautiful, professional static content. Think of it as a WordPress for Laravel, with the ability to generate static contents of the whole website.
 
 <!-- Nidavel is accessible, powerful, and provides tools required for robust static content management. -->
 
 ## Requirements
-- PHP version 8 minimum
-- Composer version 2 minimum
+- PHP version 8 minimum. You can get latest PHP using this link [https://www.apachefriends.org/download.html](https://www.apachefriends.org/download.html)
+- Composer version 2 minimum (not required if you are using the stand alone version).
 
 ## Quick start
 - Get Nidavel
